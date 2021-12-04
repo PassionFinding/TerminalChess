@@ -1,7 +1,51 @@
 class Board:
-  board = {}
-  letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
-  numbers = ["1", "2", "3", "4", "5", "6", "7", "8"]
-  for letter in letters:
+    def __init__(self):
+        board = {}
+        files = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        ranks = [1, 2, 3, 4, 5, 6, 7, 8]
+        for file in files:
+            board[file] = []
+            for rank in ranks:
+                board[file].append(rank)
+        
+        # board["a"][0] = Black_Rook_1
+        # board["b"][0] = White_Knight_1
+        # board["c"][0] = White_Dark_Bishop
+        # board["d"][0] = White_Queen
+        # board["e"][0] = White_King
+        # board["f"][0] = White_Light_Bishop
+        # board["g"][0] = 
+        #Unfinished "plan"
+
+board = Board()
+
+class Piece:
+    def __init__(self, notation, color, pos):
+        self.notation = notation
+        self.color = color
+        self.pos = pos
+
+White_King = Piece("K", "white", )
+Black_King = Piece("K", "black")
+
+White_Queen = Piece("Q", "white")
+Black_Queen = Piece("Q", "black")
+
+White_Light_Bishop = Piece("B", "white")
+White_Dark_Bishop = Piece("B", "white" )
+Black_Light_Bishop = Piece("B", "black")
+Black_Dark_Bishop = Piece("B", "black")
+
+White_Knight_1 = Piece("N", "white")
+White_Knight_2 = Piece("N", "white")
+Black_Knight_1 = Piece("N", "black")
+Black_Knight_2 = Piece("N", "black")
+
+White_Rook_1 = Piece("R", "white")
+White_Rook_2 = Piece("R", "white")
+Black_Rook_1 = Piece("R", "black")
+Black_Rook_2 = Piece("R", "black")
+
+#Possible error might be ambiguous move orders.
     
   
