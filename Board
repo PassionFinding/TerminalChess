@@ -1,3 +1,4 @@
+
 class Board:
     def __init__(self):
         board = {}
@@ -47,5 +48,16 @@ Black_Rook_1 = Piece("R", "black")
 Black_Rook_2 = Piece("R", "black")
 
 #Possible error might be ambiguous move orders.
+#Test 12/5/21
+
+
+        
+        
+        
     
-  
+
+        
+    
+
+    
+
