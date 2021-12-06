@@ -1,53 +1,55 @@
 
 class Board:
-    board = {}
-    files = ["h", "g", "f", "e", "d", "c", "b", "a"]
-    #Backwards so that it appears in the terminal backwards.
-    ranks = [8, 7, 6, 5, 4, 3, 2, 1]
-    for file in files:
-        board[file] = []
-        for rank in ranks:
-            board[file].append(rank)
+    #Dictionary does not work due to complications with printing out the board.
+    files = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    ranks = [1, 2, 3, 4, 5, 6, 7, 8]
+    board = [[file + str(rank) for rank in ranks] for file in files]
+    
+    def __init__(self):
+        pass
+
+    def __printboard__(self):
+        row = []
+
+
+
+
         
 board = Board()
 
 def PrintBoard():
-    for x in Board.files:
-        lzt = []
-    for lol in Board.ranks:
-        lzt.append(x + str(lol))
-    print(lzt)
+    white_square = "o "
+    black_square = "x "
+    # rep = 
+
 
     
 class Piece:
     def __init__(self, notation, color, pos):
         self.notation = notation
         self.color = color
-        self.pos = pos
+        # self.pos = 
 
-White_King = Piece("K", "white")
-Black_King = Piece("K", "black")
+# White_King = Piece("k ", "white", "e1")
+# Black_King = Piece("K ", "black", "e8")
 
-White_Queen = Piece("Q", "white")
-Black_Queen = Piece("Q", "black")
+# White_Queen = Piece("q ", "white", "d1")
+# Black_Queen = Piece("Q ", "black", "d8")
 
-White_Light_Bishop = Piece("B", "white")
-White_Dark_Bishop = Piece("B", "white" )
-Black_Light_Bishop = Piece("B", "black")
-Black_Dark_Bishop = Piece("B", "black")
+# White_Light_Bishop = Piece("b ", "white", "f1")
+# White_Dark_Bishop = Piece("b ", "white", "c1" )
+# Black_Light_Bishop = Piece("B ", "black", "c8")
+# Black_Dark_Bishop = Piece("B ", "black", "f8")
 
-White_Knight_1 = Piece("N", "white")
-White_Knight_2 = Piece("N", "white")
-Black_Knight_1 = Piece("N", "black")
-Black_Knight_2 = Piece("N", "black")
+# White_Knight_1 = Piece("n ", "white", "b1")
+# White_Knight_2 = Piece("n ", "white", "g1")
+# Black_Knight_1 = Piece("N ", "black", "b8")
+# Black_Knight_2 = Piece("N ", "black", "g8")
 
-White_Rook_1 = Piece("R", "white")
-White_Rook_2 = Piece("R", "white")
-Black_Rook_1 = Piece("R", "black")
-Black_Rook_2 = Piece("R", "black")
-
-
-
+# White_Rook_1 = Piece("r ", "white")
+# White_Rook_2 = Piece("r ", "white")
+# Black_Rook_1 = Piece("R ", "black")
+# Black_Rook_2 = Piece("R ", "black")
 
         
         
