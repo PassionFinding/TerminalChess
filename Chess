@@ -1,0 +1,61 @@
+
+class Board:
+    board = {}
+    files = ["h", "g", "f", "e", "d", "c", "b", "a"]
+    #Backwards so that it appears in the terminal backwards.
+    ranks = [8, 7, 6, 5, 4, 3, 2, 1]
+    for file in files:
+        board[file] = []
+        for rank in ranks:
+            board[file].append(rank)
+        
+board = Board()
+
+def PrintBoard():
+    for x in Board.files:
+        lzt = []
+    for lol in Board.ranks:
+        lzt.append(x + str(lol))
+    print(lzt)
+
+    
+class Piece:
+    def __init__(self, notation, color, pos):
+        self.notation = notation
+        self.color = color
+        self.pos = pos
+
+White_King = Piece("K", "white")
+Black_King = Piece("K", "black")
+
+White_Queen = Piece("Q", "white")
+Black_Queen = Piece("Q", "black")
+
+White_Light_Bishop = Piece("B", "white")
+White_Dark_Bishop = Piece("B", "white" )
+Black_Light_Bishop = Piece("B", "black")
+Black_Dark_Bishop = Piece("B", "black")
+
+White_Knight_1 = Piece("N", "white")
+White_Knight_2 = Piece("N", "white")
+Black_Knight_1 = Piece("N", "black")
+Black_Knight_2 = Piece("N", "black")
+
+White_Rook_1 = Piece("R", "white")
+White_Rook_2 = Piece("R", "white")
+Black_Rook_1 = Piece("R", "black")
+Black_Rook_2 = Piece("R", "black")
+
+
+
+
+        
+        
+        
+    
+
+        
+    
+
+    
+
