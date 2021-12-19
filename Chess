@@ -1,63 +1,37 @@
 
-class Board:
-    #Dictionary does not work due to complications with printing out the board.
-    files = ["a", "b", "c", "d", "e", "f", "g", "h"]
-    ranks = [1, 2, 3, 4, 5, 6, 7, 8]
-    board = [[file + str(rank) for rank in ranks] for file in files]
-    
-    def __init__(self):
-        pass
-
-    def __printboard__(self):
-        row = []
+from string import ascii_uppercase as wordbabies
 
 
+#Dictionary does not work due to complications with printing out the board.
 
+layout = [["X" for i in range(8)] for i in range(8)]
 
+# babywords = " ".join(wordbabies[:8]) might be used later
+
+def printboard():
+    for thing in layout:
+        print(" ".join(thing))
         
-board = Board()
 
-def PrintBoard():
-    white_square = "o "
-    black_square = "x "
-    # rep = 
+a_h = list(wordbabies[:8])
 
-
-    
 class Piece:
-    def __init__(self, notation, color, pos):
+    def __init__(self, notation, color, position):
         self.notation = notation
         self.color = color
-        # self.pos = 
+        self.position = position
+#white is true, black is false
 
-# White_King = Piece("k ", "white", "e1")
-# Black_King = Piece("K ", "black", "e8")
+white_apawn = Piece("", True, layout[1][0])
+white_bpawn = Piece("", True, layout[1][1])
 
-# White_Queen = Piece("q ", "white", "d1")
-# Black_Queen = Piece("Q ", "black", "d8")
 
-# White_Light_Bishop = Piece("b ", "white", "f1")
-# White_Dark_Bishop = Piece("b ", "white", "c1" )
-# Black_Light_Bishop = Piece("B ", "black", "c8")
-# Black_Dark_Bishop = Piece("B ", "black", "f8")
 
-# White_Knight_1 = Piece("n ", "white", "b1")
-# White_Knight_2 = Piece("n ", "white", "g1")
-# Black_Knight_1 = Piece("N ", "black", "b8")
-# Black_Knight_2 = Piece("N ", "black", "g8")
+while True:
+    player_move = input("Enter move. ")
 
-# White_Rook_1 = Piece("r ", "white")
-# White_Rook_2 = Piece("r ", "white")
-# Black_Rook_1 = Piece("R ", "black")
-# Black_Rook_2 = Piece("R ", "black")
+    player_move = list(player_move)
 
-        
-        
-        
-    
+    layout[int(player_move[1])-1][a_h.index(player_move[0])] = "p"
 
-        
-    
-
-    
-
+    printboard()
