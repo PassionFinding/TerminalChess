@@ -1,0 +1,34 @@
+
+from string import ascii_uppercase as wordbabies
+
+class Board:
+    #Dictionary does not work due to complications with printing out the board.
+    layout = [["O" for i in range(8)] for i in range(8)]
+    # babywords = " ".join(wordbabies[:8]) might be used later
+
+    def printboard(self):
+        for thing in Board.layout:
+            print(" ".join(thing))
+        
+
+a_h = list(wordbabies[:6])
+player_move = input("Enter move. ")
+player_move = list(player_move)
+Board.layout[int(player_move[1])-1][a_h.index(player_move[0])] = " "
+
+test = Board()
+test.printboard()
+
+        
+
+
+        
+        
+        
+    
+
+        
+    
+
+    
+
