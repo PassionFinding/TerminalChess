@@ -1,0 +1,30 @@
+class Rook(Piece):
+    def __init__(self, color, notation, position, moved):
+        super().__init__(color, notation, position, moved)
+    
+    def legal(self, move):
+    #First we need to find all of the possible squares on the column and row of a rook. 
+    #So if a rook's position is A5, then the column list should have A1, A2, A3, A4, A5, A6, A7, A8 and the row list should have A5, B5, C5, D5, E5, F5, G5, H5
+    #Both list objects have something in common, for columns it is the letter and for rows it is the number. 
+        legal_list = []
+        column = []
+        row = []
+        #THE CODE BELOW MIGHT BE FLAWED !!!!!!!
+        for item in layout:
+            if  int(self.position[-1]) - 1 == layout.index(item):
+                row.append(str(a_h[a_h.index(item.index(i))]) + str(layout.index(item))) for i in item
+            for i in item:
+                if item.index(i) == a_h.index(self.position[-2]): 
+                    column.append(str(a_h[a_h.index(item.index(i))]) + str(layout.index(item)))
+        #THE CODE ABOVE MIGHT BE FLAWED !!!!!!!
+        
+        for square in column:
+            legal_column = []
+            if layout[int(square[-1])][a_h.index(square[-2])] == "X":
+                legal_column.append
+            
+            if layout[int(square[-1])][a_h.index(square[-2])] == self.notation:
+                for square in column[column.index(square):]
+                
+        
+                    
