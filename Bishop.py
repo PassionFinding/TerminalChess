@@ -15,6 +15,21 @@ class Bishop(Piece):
     #The positive slope diagonal, in reference to the bishop's position, goes +1 +1 and -1 -1
     #The negative slop diagonal, in reference to the bishop's position, goes +1 -1 and -1 +1
     column_pos = Piece.a_h.index(self.position[-2])
-    row_pos = int(self.position[-1])
+    row_pos = int(self.position[-1]-1)
     while column_pos < 8 and row_pos < 8:
-      pass
+      column_pos += 1
+      row_pos+= 1
+      positive_diagonal.append(str(Piece.a_h[column_pos]) + str(row_pos))
+    while column_pos >= 0 and row_pos >= 0:
+      column_pos -= 1
+      row_pos -= 1
+      positive_diagonal.append(str(Piece.a_h[column_pos]) + str(row_pos))
+    while column_pos >= 0 and row_pos < 8:
+      column_pos -= 1
+      row_pos += 1
+      negative_diagonal.append(str(Piece.a_h[column_pos]) + str(row_pos))
+    while column_pos < 8 and row_pos >= 0:
+      column_pos += 1
+      row_pos -= 1
+      negative_diagonal.append(str(Piece.a_h[column_pos]) + str(row_pos))
+      
