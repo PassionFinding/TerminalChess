@@ -101,9 +101,10 @@ class Rook(Piece):
           test_column.clear()
           legal_row.append(square)
           test_row.append(layout[int(square[-1])][a_h.index(square[-2])])
+    
 
-  test_move = move[0] + str(int(move[-1]) - 1)
-  if test_move in legal_list:
-    return True
-  else:
-    return False
+    test_move = move[0] + str(int(move[-1]) - 1)
+    if test_move in legal_list:
+      return True
+    else:
+     return False
