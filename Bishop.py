@@ -1,4 +1,5 @@
-class Bishop:
+import Piece
+class Bishop(Piece):
   def __init__(self, color, notation, position, moved):
     super().__init__(color, notation, position, moved)
   
@@ -8,4 +9,12 @@ class Bishop:
 #you can perform those operations on the index numbers of the piece's positions and stop once a value is at zero, at 7, or the pair of number coordinates on the layout don't equal an empty space
   def legal(self, move):
     legal_list = []
-    
+    positive_diagonal = []
+    negative_diagonal = []
+    #So im planning to check for each diagonal that the bishop is on, the positive slope diagonal and the negative slope diagonal
+    #The positive slope diagonal, in reference to the bishop's position, goes +1 +1 and -1 -1
+    #The negative slop diagonal, in reference to the bishop's position, goes +1 -1 and -1 +1
+    column_pos = Piece.a_h.index(self.position[-2])
+    row_pos = int(self.position[-1])
+    while column_pos < 8 and row_pos < 8:
+      pass
