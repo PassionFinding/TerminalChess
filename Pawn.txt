@@ -34,8 +34,8 @@ class Pawn(Piece):
                 
                 #Checks if the space one square diagonal left from it is occupied by a piece
                 
-                elif layout[int(self.position[-1])-2][a_h.index(self.position[-2]) + 1] != "X" and layout[int(self.position[-1])-2][a_h.index(self.position[-2]) + 1] == layout[int(list(move)[-1]) - 1][a_h.index(move[-2])]
-                
+                elif layout[int(self.position[-1])-2][a_h.index(self.position[-2]) + 1] != "X" and layout[int(self.position[-1])-2][a_h.index(self.position[-2]) + 1] == layout[int(list(move)[-1]) - 1][a_h.index(move[-2])]:
+                    
                     if a_h.index(self.position[-2]) + 1 <=7:
                     
                         return True

@@ -6,13 +6,11 @@
 #5. A starting position
 #6. A legal move checker
 #   a. To see if the King will be in check
-#   b. To see if the piece is even allowed on that square.
-
-#Notes:
-#1.the pawn legal method needs an extra condition to check if the King will be in danger once the pawn moves. 
+#   b. To see if the piece is even allowed on that square. 
 
 class Piece:
-
+    white_notation = [R, B, N, Q, K, P]
+    black_notation = [r, b, n, q, k, p]
     def __init__(self, color, notation, position, moved):
     
         self.color = color
