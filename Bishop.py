@@ -32,4 +32,98 @@ class Bishop(Piece):
       column_pos += 1
       row_pos -= 1
       negative_diagonal.append(str(Piece.a_h[column_pos]) + str(row_pos))
-      
+    
+    legal_pos = []
+    test_pos = []
+    for square in positive_diagonal:
+      if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] == "X":
+        legal_pos.append(square)
+        test_pos.append(Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])])
+      else:
+        if square[-2] + str(int(square[-1]) + 1) == self.position:
+          test_pos.append(Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])])
+        else:
+          if self.notation in test_pos:
+            if self.color == True:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.white_notation:
+                for item in legal_pos:
+                  legal_list.append(item)
+                break
+              else:
+                legal_pos.append(square)
+                for item in legal_pos:
+                  legal_list.append(item)
+                break
+            elif self.color == False:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.black_notation:
+                for item in legal_pos:
+                  legal_list.append(item)
+                break
+              else:
+                legal_pos.append(square)
+                for item in legal_pos:
+                  legal_list.append(item)
+                break
+          else:
+            legal_pos.clear()
+            test_pos.clear()
+            if self.color == True:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.white_notation:
+                pass
+              else:
+                legal_list.append(square)
+            else:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.black_notation:
+                pass
+              else:
+                legal_list.append(square)
+    legal_neg = []
+    test_neg = []
+    for square in negative_diagonal:
+      if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] == "X":
+        legal_neg.append(square)
+        test_neg.append(Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])])
+      else:
+        if square[-2] + str(int(square[-1]) + 1) == self.position:
+          test_neg.append(Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])])
+        else:
+          if self.notation in test_neg:
+            if self.color == True:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.white_notation:
+                for item in legal_neg:
+                  legal_list.append(item)
+                break
+              else:
+                legal_neg.append(square)
+                for item in legal_neg:
+                  legal_list.append(item)
+                break
+            elif self.color == False:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.black_notation:
+                for item in legal_neg:
+                  legal_list.append(item)
+                break
+              else:
+                legal_neg.append(square)
+                for item in legal_neg:
+                  legal_list.append(item)
+                break
+          else:
+            legal_neg.clear()
+            test_neg.clear()
+            if self.color == True:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.white_notation:
+                pass
+              else:
+                legal_list.append(square)
+            else:
+              if Piece.layout[int(square[-1])][Piece.a_h.index(square[-2])] in Piece.Piece.black_notation:
+                pass
+              else:
+                legal_list.append(square)
+                
+    test_move = move[0] + str(int(move[-1]) - 1)
+    if test_move in legal_list:
+      return True
+    else:
+     return False
