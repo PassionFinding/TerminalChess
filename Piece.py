@@ -15,23 +15,15 @@ class Piece:
     white_notation = ["R", "B", "N", "Q", "K", "P"]
     black_notation = ["r", "b", "n", "q", "k", "p"]
     def __init__(self, color, notation, position, moved):
-    
         self.color = color
-        
         self.notation = notation
-        
         self.position = position
-        
         self.moved = moved
-    
+
     def piece_move(self, p_move):
-    
     #player input will be set to p_move
-    
         layout[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "X"
-        
         layout[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
-        
         self.position = str(p_move[-2]) + str(p_move[-1])
 
 
