@@ -62,3 +62,4 @@ class Pawn(Piece):
                         return True
                 else:
                     return False
+                    
