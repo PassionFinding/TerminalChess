@@ -50,7 +50,7 @@ class Piece:
               else:
                 legal_list.append(square)
 
-    test_move = move[0] + str(int(move[-1]) - 1)
+    test_move = move[-2] + str(int(move[-1]) - 1)
     if test_move in legal_list:
       return True
     else:

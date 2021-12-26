@@ -34,3 +34,5 @@ class Bishop(Piece):
   def blegal(self, move):
     if Bishop.legal(Bishop.get_positive, move) == True or Bishop.legal(Bishop.get_negative, move) == True:
       Bishop.piece_move(move)
+    else:
+      print("Bro you can't do that")

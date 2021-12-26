@@ -1,4 +1,4 @@
-import Piece
+from Piece import Piece
 class Rook(Piece):
   def __init__(self, color, notation, position, moved):
     super().__init__(color, notation, position, moved)
@@ -21,3 +21,5 @@ class Rook(Piece):
   def rlegal(self, move):
     if Rook.legal(Rook.get_column(), move) == True or Rook.legal(Rook.get_row(), move) == True:
       Rook.piece_move(move)
+    else:
+      print("Bro you can't do that")
