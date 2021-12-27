@@ -1,5 +1,5 @@
 layout = [["X" for i in range(8)] for i in range(8)]
-from string import ascii_uppercase as wordbabies
+from string import ascii_lowercase as wordbabies
 a_h = list(wordbabies[:8])
 
 class Piece:
