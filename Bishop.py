@@ -32,7 +32,7 @@ class Bishop(Piece):
     return negative_diagonal
   
   def blegal(self, move):
-    if Bishop.legal(Bishop.get_positive, move) == True or Bishop.legal(Bishop.get_negative, move) == True:
-      Bishop.piece_move(move)
+    if self.legal(self.get_positive(), move) == True or self.legal(self.get_negative(), move) == True:
+      self.piece_move(move)
     else:
       print("Bro you can't do that")
