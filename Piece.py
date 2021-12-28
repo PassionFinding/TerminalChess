@@ -61,3 +61,4 @@ class Piece:
     layout[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "X"
     layout[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
     self.position = str(p_move[-2]) + str(p_move[-1])    
+    self.moved = True
