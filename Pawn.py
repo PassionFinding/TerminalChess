@@ -1,8 +1,8 @@
 from Piece import Piece
 class Pawn(Piece):
-    def __init__(self, color, notation, position, moved):
+    def __init__(self, color, notation, position, moved, passantable):
         super().__init__(color, notation, position, moved)
-    
+        self.passantable = passantable
     def legal(self, move):
         square = move[-2:]
         black_front = Piece.layout[int(self.position[-1])-2][Piece.a_h.index(self.position[-2])]
@@ -28,18 +28,26 @@ class Pawn(Piece):
         w_left = Piece.a_h.index(self.position[-2]) - 1
 
         if self.color == True:
-            if (square == white_double_front_coordinates and white_double_front == "X" and white_front == "X" and self.moved == False) or (
-            square == white_front_coordinates and white_front == "X") or (
+            if square == white_double_front_coordinates and white_double_front == "☐" and white_front == "☐" and self.moved == False:
+                self.passantable = True
+                return True
+            elif (
+            square == white_front_coordinates and white_front == "☐") or (
             square == white_right_coordinates and white_right in Piece.black_notation and w_right < 8) or (
             square == white_left_coordinates and white_left in Piece.black_notation and w_left >= 0):
+                self.passantable = False
                 return True
             else:
                 return False
         else:
-            if (square == black_double_front_coordinates and black_double_front == "X" and black_front == "X" and self.moved == False) or (
-            square == black_front_coordinates and black_front == "X") or (
+            if square == black_double_front_coordinates and black_double_front == "☐" and black_front == "☐" and self.moved == False:
+                self.passantable = True
+                return True
+            elif (
+            square == black_front_coordinates and black_front == "☐") or (
             square == black_right_coordinates and black_right in Piece.white_notation and b_right < 8) or (
             square == black_left_coordinates and black_left in Piece.white_notation and b_left >= 0):
+                self.passantable = False
                 return True
             else:
                 return False
