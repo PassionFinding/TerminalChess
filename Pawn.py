@@ -1,8 +1,9 @@
 from Piece import Piece
 class Pawn(Piece):
-    def __init__(self, color, notation, position, moved, passantable):
+    def __init__(self, color, notation, position, moved, passantable, current_column):
         super().__init__(color, notation, position, moved)
         self.passantable = passantable
+        self.current_column = self.position[0]
     def legal(self, move):
         square = move[-2:]
         black_front = Piece.layout[int(self.position[-1])-2][Piece.a_h.index(self.position[-2])]

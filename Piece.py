@@ -12,7 +12,7 @@ class Piece:
     self.moved = moved
     
 
-  def legal(self, list_of_moves, move): 
+  def llegal(self, list_of_moves, move): 
     legal_list = [] 
     test_list = [] 
     for square in list_of_moves: 

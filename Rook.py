@@ -17,9 +17,15 @@ class Rook(Piece):
       if  int(self.position[-1]) - 1 == Piece.layout.index(item):
         for i in item:
           row.append(str(Piece.a_h[Piece.a_h.index(item.index(i))]) + str(Piece.layout.index(item)))
+
+  def legal(self, move):
+    if self.llegal(self.get_column(), move) == True or self.llegal(self.get_row(), move) == True:
+      return True
+    else:
+      return False
   
   def rlegal(self, move):
-    if self.legal(self.get_column(), move) == True or self.legal(self.get_row(), move) == True:
+    if self.llegal(self.get_column(), move) == True or self.llegal(self.get_row(), move) == True:
       self.piece_move(move)
     else:
       print("Bro you can't do that")
