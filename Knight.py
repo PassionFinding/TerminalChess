@@ -33,26 +33,26 @@ class Knight(Piece):
       double_down = int(self.position[-1]) - 3
 
       if self.color == True:
-        if (square == uul and (upper_upper_left ==  "☐" or upper_upper_left in Piece.black_notation) and double_up < 8 and left >= 0) or (
-        square == uur and (upper_upper_right == "☐" or upper_upper_right in Piece.black_notation) and double_up < 8 and right < 8) or (
-        square == ul and (upper_left == "☐" or upper_left in Piece.black_notation) and double_left >= 0) or (
-        square == ur and (upper_right == "☐" or upper_right in Piece.black_notation) and double_right < 8) or (
-        square == ll and (lower_left == "☐" or lower_left in Piece.black_notation) and down >= 0 and double_left >= 0) or (
-        square == lr and (lower_right == "☐" or lower_right in Piece.black_notation) and down >= 0 and double_right > 8) or (
-        square == lll and (lower_lower_left == "☐" or lower_lower_left in Piece.black_notation) and double_down >= 0 and left >= 0) or (
-        square == llr and (lower_lower_right == "☐" or lower_lower_right in Piece.black_notation) and double_down >= 0 and right < 8):
+        if (square == uul and (upper_upper_left ==  "⬚" or upper_upper_left in Piece.black_notation) and double_up < 8 and left >= 0) or (
+        square == uur and (upper_upper_right == "⬚" or upper_upper_right in Piece.black_notation) and double_up < 8 and right < 8) or (
+        square == ul and (upper_left == "⬚" or upper_left in Piece.black_notation) and double_left >= 0) or (
+        square == ur and (upper_right == "⬚" or upper_right in Piece.black_notation) and double_right < 8) or (
+        square == ll and (lower_left == "⬚" or lower_left in Piece.black_notation) and down >= 0 and double_left >= 0) or (
+        square == lr and (lower_right == "⬚" or lower_right in Piece.black_notation) and down >= 0 and double_right > 8) or (
+        square == lll and (lower_lower_left == "⬚" or lower_lower_left in Piece.black_notation) and double_down >= 0 and left >= 0) or (
+        square == llr and (lower_lower_right == "⬚" or lower_lower_right in Piece.black_notation) and double_down >= 0 and right < 8):
             return True
         else:
             return False
       else:
-        if (square == uul and (upper_upper_left ==  "☐" or upper_upper_left in Piece.white_notation) and double_up < 8 and left >= 0) or (
-        square == uur and (upper_upper_right == "☐" or upper_upper_right in Piece.white_notation) and double_up < 8 and right < 8) or (
-        square == ul and (upper_left == "☐" or upper_left in Piece.white_notation) and double_left >= 0) or (
-        square == ur and (upper_right == "☐" or upper_right in Piece.white_notation) and double_right < 8) or (
-        square == ll and (lower_left == "☐" or lower_left in Piece.white_notation) and down >= 0 and double_left >= 0) or (
-        square == lr and (lower_right == "☐" or lower_right in Piece.white_notation) and down >= 0 and double_right > 8) or (
-        square == lll and (lower_lower_left == "☐" or lower_lower_left in Piece.white_notation) and double_down >= 0 and left >= 0) or (
-        square == llr and (lower_lower_right == "☐" or lower_lower_right in Piece.white_notation) and double_down >= 0 and right < 8):
+        if (square == uul and (upper_upper_left ==  "⬚" or upper_upper_left in Piece.white_notation) and double_up < 8 and left >= 0) or (
+        square == uur and (upper_upper_right == "⬚" or upper_upper_right in Piece.white_notation) and double_up < 8 and right < 8) or (
+        square == ul and (upper_left == "⬚" or upper_left in Piece.white_notation) and double_left >= 0) or (
+        square == ur and (upper_right == "⬚" or upper_right in Piece.white_notation) and double_right < 8) or (
+        square == ll and (lower_left == "⬚" or lower_left in Piece.white_notation) and down >= 0 and double_left >= 0) or (
+        square == lr and (lower_right == "⬚" or lower_right in Piece.white_notation) and down >= 0 and double_right > 8) or (
+        square == lll and (lower_lower_left == "⬚" or lower_lower_left in Piece.white_notation) and double_down >= 0 and left >= 0) or (
+        square == llr and (lower_lower_right == "⬚" or lower_lower_right in Piece.white_notation) and double_down >= 0 and right < 8):
             return True
         else:
             return False

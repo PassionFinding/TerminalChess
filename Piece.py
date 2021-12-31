@@ -16,7 +16,7 @@ class Piece:
     legal_list = [] 
     test_list = [] 
     for square in list_of_moves: 
-      if layout[int(square[-1])][a_h.index(square[-2])] == "☐": 
+      if layout[int(square[-1])][a_h.index(square[-2])] == "⬚": 
         legal_list.append(square) 
         test_list.append(layout[int(square[-1])][a_h.index(square[-2])]) 
       else:
@@ -58,7 +58,7 @@ class Piece:
 
   def piece_move(self, p_move):
   #player input will be set to p_move
-    layout[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "☐"
+    layout[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
     layout[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
     self.position = str(p_move[-2]) + str(p_move[-1])    
     self.moved = True
