@@ -16,10 +16,13 @@ class King(Piece):
         possible_moves = [front, back, left, right, front_left, front_right, back_left, back_right]
 
         for possible in possible_moves:
-            if alo == Piece.a_h[possible[1]] + str(possible[0]) and (Piece.layout[possible[0]][possible[1]] == "⬚" or (Piece.layout[possible[0]][possible[1]] in 
+            if alo == Piece.a_h[possible[1]] + str(possible[0]) and possible[-1] in range(8) and possible[-2] in range(8):
+                if (Piece.layout[possible[0]][possible[1]] == "⬚" or (Piece.layout[possible[0]][possible[1]] in 
             Piece.black_notation and self.color == True) or (Piece.layout[possible[0]][possible[1]] in Piece.white_notation and self.color == False)):
-                return True
-                break
+                    return True
+                    break
+                else:
+                    continue
             else:
                 continue
     

@@ -1,4 +1,5 @@
 from Piece import Piece
+from Piece import a_h
 class Knight(Piece):
   def __init__(self, color, notation, position, moved):
     super().__init__(color, notation, position, moved)
@@ -6,31 +7,14 @@ class Knight(Piece):
   def legal(self, move):
       #will be done from the perspective of white
       square = move[-2:]
-      upper_upper_left = Piece.layout[int(self.position[-1]) + 1][Piece.a_h.index(self.position[-2]) - 1]
-      upper_upper_right = Piece.layout[int(self.position[-1]) + 1][Piece.a_h.index(self.position[-2]) + 1]
-      upper_left = Piece.layout[int(self.position[-1])][Piece.a_h.index(self.position[-2]) - 2]
-      upper_right = Piece.layout[int(self.position[-1])][Piece.a_h.index(self.position[-2]) + 2]
-      lower_left = Piece.layout[int(self.position[-1]) - 2][Piece.a_h.index(self.position[-2]) - 2]
-      lower_right = Piece.layout[int(self.position[-1]) - 2][Piece.a_h.index(self.position[-2]) + 2]
-      lower_lower_left = Piece.layout[int(self.position[-1]) - 3][Piece.a_h.index(self.position[-2]) - 1]
-      lower_lower_right = Piece.layout[int(self.position[-1]) - 3][Piece.a_h.index(self.position[-2]) + 1]
-
-      uul = Piece.a_h[Piece.a_h.index(self.position[-2]) - 1] + str(int(self.position[-1]) + 2)
-      uur = Piece.a_h[Piece.a_h.index(self.position[-2]) + 1] + str(int(self.position[-1]) + 2)
-      ul = Piece.a_h[Piece.a_h.index(self.position[-2]) - 2] + str(int(self.position[-1]) + 1)
-      ur = Piece.a_h[Piece.a_h.index(self.position[-2]) + 2] + str(int(self.position[-1]) + 1)
-      ll = Piece.a_h[Piece.a_h.index(self.position[-2]) - 2] + str(int(self.position[-1]) - 1)
-      lr = Piece.a_h[Piece.a_h.index(self.position[-2]) + 2] + str(int(self.position[-1]) - 1)
-      lll = Piece.a_h[Piece.a_h.index(self.position[-2]) - 1] + str(int(self.position[-1]) - 2)
-      llr = Piece.a_h[Piece.a_h.index(self.position[-2]) + 1] + str(int(self.position[-1]) - 2)
-
-      left = Piece.a_h.index(self.position[-2]) - 1
-      right = Piece.a_h.index(self.position[-2]) + 1
-      double_left = Piece.a_h.index(self.position[-2]) - 2
-      double_right = Piece.a_h.index(self.position[-2]) + 2
-      double_up = int(self.position[-1]) + 1
-      down = int(self.position[-1]) - 2
-      double_down = int(self.position[-1]) - 3
+      upper_upper_left = [int(self.position[-1]) + 1, Piece.a_h.index(self.position[-2]) - 1]
+      upper_upper_right = [int(self.position[-1]) + 1, Piece.a_h.index(self.position[-2]) + 1]
+      upper_left = [int(self.position[-1]), Piece.a_h.index(self.position[-2]) - 2]
+      upper_right = [int(self.position[-1]), Piece.a_h.index(self.position[-2]) + 2]
+      lower_left = [int(self.position[-1]) - 2, Piece.a_h.index(self.position[-2]) - 2]
+      lower_right = [int(self.position[-1]) - 2, Piece.a_h.index(self.position[-2]) + 2]
+      lower_lower_left = [int(self.position[-1]) - 3, Piece.a_h.index(self.position[-2]) - 1]
+      lower_lower_right = [int(self.position[-1]) - 3, Piece.a_h.index(self.position[-2]) + 1]
 
       if self.color == True:
         if (square == uul and (upper_upper_left ==  "⬚" or upper_upper_left in Piece.black_notation) and double_up < 8 and left >= 0) or (

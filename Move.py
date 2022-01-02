@@ -19,6 +19,7 @@ white_right_knight = Knight(True, "🅽", "g1", False)
 white_left_bishop = Bishop(True, "🅱", "c1", False)
 white_right_bishop = Bishop(True, "🅱", "f1", False)
 
+#You can add the not legal statement at the end
 def move(p_move):
     square = p_move[-2]
     notation = p_move[0]
@@ -34,40 +35,8 @@ def move(p_move):
                     if item.legal(p_move) == True:
                         item.plegal(p_move)
                         break
-                    else:
-                        print("not legal")
                 else:
                     if item.current_column == notation:
                         item.plegal(p_move)
                         break
-                    else:
-                        print("not legal")
-        elif notation == "Q" or notation == "q":
-            white_queen.qlegal(p_move)
-        elif notation == "K" or notation == "k":
-            white_king.klegal(p_move)
-        elif notation == "N" or notation == "n":
-            if white_left_knight.legal(p_move) == True and white_right_knight.legal(p_move) == True:
-                if clarification in white_left_knight.position:
-                    white_left_knight.piece_move(p_move)
-                elif clarification in white_right_knight.position:
-                    white_right_knight.piece_move(p_move)
-            elif white_left_knight.legal(p_move) == True:
-                white_left_knight.piece_move(p_move)
-            elif white_right_knight == True:
-                white_right_knight.piece_move(p_move)
-            else:
-                print("not legal")
-        elif notation == "B":
-            if white_left_bishop.legal(p_move) == True and white_right_bishop.legal(p_move) == True:
-                if clarification in white_left_bishop.position:
-                    white_left_bishop.piece_move(p_move)
-                elif clarification in white_right_bishop.position:
-                    white_right_bishop.piece_move(p_move)
-            elif white_left_bishop.legal(p_move) == True:
-                white_left_bishop.piece_move(p_move)
-            elif white_right_bishop == True:
-                white_right_bishop.piece_move(p_move)
-            else:
-                print("not legal")
-#Make sure to do a castling thing for the rooks
+        
