@@ -1,7 +1,6 @@
-layout = [["X" for i in range(8)] for i in range(8)]
 from string import ascii_lowercase as wordbabies
+from Chess import layout
 a_h = list(wordbabies[:8])
-
 class Piece:
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
   black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
@@ -12,26 +11,26 @@ class Piece:
     self.moved = moved
     
 
-  def llegal(self, list_of_moves, move): 
+  def llegal(self, list_of_moves, board, move): 
     legal_list = [] 
     test_list = [] 
     for square in list_of_moves: 
-      if layout[int(square[-1])][a_h.index(square[-2])] == "⬚": 
+      if board[int(square[-1])][a_h.index(square[-2])] == "⬚": 
         legal_list.append(square) 
-        test_list.append(layout[int(square[-1])][a_h.index(square[-2])]) 
+        test_list.append(board[int(square[-1])][a_h.index(square[-2])]) 
       else:
         if square[-2] + str(int(square[-1]) + 1) == self.position:
-          test_list.append(layout[int(square[-1])][a_h.index(square[-2])])
+          test_list.append(board[int(square[-1])][a_h.index(square[-2])])
         else:
           if self.notation in test_list:
             if self.color == True:
-              if layout[int(square[-1])][a_h.index(square[-2])] in Piece.white_notation:
+              if board[int(square[-1])][a_h.index(square[-2])] in Piece.white_notation:
                 break
               else:
                 legal_list.append(square)
                 break
             elif self.color == False:
-              if layout[int(square[-1])][a_h.index(square[-2])] in Piece.black_notation:
+              if board[int(square[-1])][a_h.index(square[-2])] in Piece.black_notation:
                 break
               else:
                 legal_list.append(square)
@@ -40,13 +39,13 @@ class Piece:
             legal_list.clear()
             test_list.clear()
             if self.color == True:
-              if layout[int(square[-1])][a_h.index(square[-2])] in Piece.white_notation:
-                pass
+              if board[int(square[-1])][a_h.index(square[-2])] in Piece.white_notation:
+                continue
               else:
                 legal_list.append(square)
             else:
-              if layout[int(square[-1])][a_h.index(square[-2])] in Piece.black_notation:
-                pass
+              if board[int(square[-1])][a_h.index(square[-2])] in Piece.black_notation:
+                continue
               else:
                 legal_list.append(square)
 
@@ -56,9 +55,94 @@ class Piece:
     else:
       return False
 
-  def piece_move(self, p_move):
+  def piece_move(self, board, p_move):
   #player input will be set to p_move
-    layout[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
-    layout[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
+    board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
+    board[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
     self.position = str(p_move[-2]) + str(p_move[-1])    
     self.moved = True
+
+class Pawn(Piece): #needs en passant
+    def __init__(self, color, notation, position, moved, passantable, current_column):
+        super().__init__(color, notation, position, moved)
+        self.passantable = passantable
+        self.current_column = self.position[0]
+    #The actual board in Chess.py will be substituted for board
+    def legal(self, board, move):
+        square = [int(move[-1]) - 1, a_h.index(move[-2])]
+        black_front = [int(self.position[-1])-2, a_h.index(self.position[-2])]
+        black_double_front = [int(self.position[-1])-3, a_h.index(self.position[-2])]
+        black_right = [int(self.position[-1])-2, a_h.index(self.position[-2]) - 1]
+        black_left = [int(self.position[-1])-2, a_h.index(self.position[-2]) + 1]
+
+        white_front = [int(self.position[-1]), a_h.index(self.position[-2])]
+        white_double_front = [int(self.position[-1])+1, a_h.index(self.position[-2])]
+        white_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
+        white_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
+
+        moves = [white_front, white_double_front, white_right, white_left, black_front, black_double_front, black_right, black_left]
+        def possible_moves(): 
+            possibilities = []
+            for move in moves:
+                if move[-2] in range(8) and move[-1] in range(8):
+                    possibilities.append(move)
+                else:
+                    continue
+            return possibilities
+        if square in possible_moves():
+            if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
+                self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
+            ):
+                self.passantable = True
+                return True
+            elif (self.color == True and square == white_front and board[square[-2]][square[-1]] == "⬚") or (self.color == False and square == black_front and board[square[-2]][square[-1]] == "⬚"):
+                self.passantable = False
+                return True
+            elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] in self.black_notation)  or (
+                self.color == False and (square == black_left or square == black_right) and board[square[-2]][square[-1]] in self.white_notation
+            ):
+                self.passantable = False
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def plegal(self, board, move):
+        if self.legal(board, move) == True:
+            self.piece_move(board, move)
+        else:
+            print("Bro you can't do that")
+
+class King(Piece):
+    def __init__(self, color, notation, position, moved):
+        super().__init__(color, notation, position, moved)
+    
+    def legal(self, board, move):
+        alo = move[-2] + str(int(move[-1]) - 1)
+        front = [int(self.position[-1]), a_h.index(self.position[-2])]
+        back = [int(self.position[-1]) - 2, a_h.index(self.position[-2])]
+        left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
+        right = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) + 1]
+        front_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
+        front_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
+        back_left = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) - 1]
+        back_right = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) + 1]
+        possible_moves = [front, back, left, right, front_left, front_right, back_left, back_right]
+
+        for possible in possible_moves:
+            if alo == a_h[possible[1]] + str(possible[0]) and possible[-1] in range(8) and possible[-2] in range(8):
+                if (board[possible[0]][possible[1]] == "⬚" or (board[possible[0]][possible[1]] in 
+            self.black_notation and self.color == True) or (board[possible[0]][possible[1]] in self.white_notation and self.color == False)):
+                    return True
+                    break
+                else:
+                    continue
+            else:
+                continue
+    
+    def klegal (self, board, move):
+        if self.legal(board, move) == True:
+            self.piece_move(board, move)
+        else:
+            print("nah")

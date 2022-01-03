@@ -1,7 +1,7 @@
 from string import ascii_lowercase as wordbabies
 from Piece import Piece
-from Pawn import Pawn
-from King import King
+from Piece import Pawn
+from Piece import King
 from Queen import Queen
 from Rook import Rook
 from Bishop import Bishop
@@ -14,7 +14,8 @@ a_h = list(wordbabies[:8])
 white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
 black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
 
-#Make a list of each sides pieces. When taken, list.pop(piece)
+
+# Make a list of each sides pieces. When taken, list.pop(piece)
 white_a_pawn = Pawn(True, "🅿", "a2", False, False, "a")
 white_b_pawn = Pawn(True, "🅿", "b2", False, False, "b")
 white_c_pawn = Pawn(True, "🅿", "c2", False, False, "c")
