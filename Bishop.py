@@ -32,14 +32,14 @@ class Bishop(Piece):
       negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
     return negative_diagonal
   
-  def legal(self, move):
-    if self.llegal(self.get_positive(), move) == True or self.llegal(self.get_negative(), move) == True:
+  def legal(self, board, move):
+    if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
       return True
     else:
       return False
   
-  def blegal(self, move):
-    if self.llegal(self.get_positive(), move) == True or self.llegal(self.get_negative(), move) == True:
+  def blegal(self, board, move):
+    if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
       self.piece_move(move)
     else:
       print("Bro you can't do that")
