@@ -111,6 +111,7 @@ class Pawn(Piece): #needs en passant and promotion
     def plegal(self, board, move):
         if self.legal(board, move) == True:
             self.piece_move(board, move)
+            self.current_column = self.position[-2]
         else:
             print("Bro you can't do that")
 
@@ -140,6 +141,9 @@ class King(Piece): #Needs castling
                     continue
             else:
                 continue
+    
+    def castle(self, board, black_pieces, white_pieces):
+          pass
     
     def klegal (self, board, move):
         if self.legal(board, move) == True:
@@ -176,13 +180,13 @@ class Knight(Piece):
           continue
 
 
-  def nlegal(self, move):
-    if self.legal(move) == True:
-        self.piece_move(move)
+  def nlegal(self, board, move):
+    if self.legal(board, move) == True:
+        self.piece_move(board, move)
     else:
         print("Bro you can't do that")
 
-# def printboard():
+def printboard():
     layout.reverse()
     numb = list(range(1, 9))
     numb.reverse()
