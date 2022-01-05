@@ -7,8 +7,6 @@ from string import ascii_lowercase as wordbabies
 # from Bishop import Bishop
 # from Knight import Knight
 
-#Functions needed: Move functionality, En Passant, Promotion, Checks, game end functionality (win/lose)
-
 layout = [["⬚" for i in range(8)] for i in range(8)]
 a_h = list(wordbabies[:8])
 white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
