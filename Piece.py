@@ -1,7 +1,7 @@
 from string import ascii_lowercase as wordbabies
 from Chess import layout
 a_h = list(wordbabies[:8])
-class Piece: #Needs check function
+class Piece: #Needs check function, and a take one
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
   black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
   def __init__(self, color, notation, position, moved):
@@ -24,7 +24,7 @@ class Piece: #Needs check function
         legal_list.append(square) 
         test_list.append(board[int(square[-1]) - 1][a_h.index(square[-2])]) 
       else:
-        if square[-2] + str(int(square[-1]) + 1) == self.position:
+        if square == self.position:
           test_list.append(board[int(square[-1]) - 1][a_h.index(square[-2])])
         else:
           if self.notation in test_list:
@@ -53,7 +53,6 @@ class Piece: #Needs check function
                 continue
               else:
                 legal_list.append(square)
-
     test_move = move[-2] + str(int(move[-1]))
     if test_move in legal_list:
       return True
@@ -210,15 +209,13 @@ class Queen(Piece):
   
   def get_positive(self):
     positive_diagonal = []
-    column_pos = a_h.index(self.position[-2])
+    column_pos = a_h.index(self.position[-2]) 
     row_pos = int(self.position[-1])
-    while column_pos in range(8) and row_pos in range(8):
+    while column_pos in range(7) and row_pos in range(8):
       column_pos += 1
       row_pos+= 1
-      positive_diagonal.append(a_h[column_pos - 1] + str(row_pos - 1))
-    column_pos = a_h.index(self.position[-2])
-    row_pos = int(self.position[-1])
-    while column_pos in range(8) and row_pos in range(8):
+    positive_diagonal.append(a_h[column_pos] + str(row_pos))
+    while column_pos in range(1, 8) and row_pos in range(2, 9):
       column_pos -= 1
       row_pos -= 1
       positive_diagonal.append(a_h[column_pos] + str(row_pos))
@@ -226,31 +223,102 @@ class Queen(Piece):
 
   def get_negative(self):
     negative_diagonal = []
-    column_pos = a_h.index(self.position[-2])
-    row_pos = int(self.position[-1])
-    while column_pos in range(1, 8) and row_pos in range(1, 8):
-      column_pos -= 1
-      row_pos += 1
-      negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
-    column_pos = a_h.index(self.position[-2])
-    row_pos = int(self.position[-1])
-    while column_pos in range(1, 8) and row_pos in range(1, 8):
+    column_pos = a_h.index(self.position[-2]) 
+    row_pos = int(self.position[-1]) 
+    while column_pos in range(7) and row_pos in range(2, 9):
       column_pos += 1
       row_pos -= 1
+    negative_diagonal.append(a_h[column_pos] + str(row_pos))
+    while column_pos in range(1, 8) and row_pos in range(8):
+      column_pos -= 1
+      row_pos += 1
       negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
     return negative_diagonal
   
   def legal(self, board, move):
-    if self.llegal(self.get_column(board), board, move) == True or self.llegal(self.get_row(board), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
+    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
       return True
     else:
       return False
 
   def qlegal(self, board, move):
-      if self.llegal(self.get_column(board), board, move) == True or self.llegal(self.get_row(board), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
+      if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
           self.piece_move(board, move)
       else:
           print("Bro you can't do that")
+
+class Bishop(Piece):
+  def __init__(self, color, notation, position, moved):
+    super().__init__(color, notation, position, moved)
+  
+  def get_positive(self):
+    positive_diagonal = []
+    column_pos = a_h.index(self.position[-2]) 
+    row_pos = int(self.position[-1])
+    while column_pos in range(7) and row_pos in range(8):
+      column_pos += 1
+      row_pos+= 1
+    positive_diagonal.append(a_h[column_pos] + str(row_pos))
+    while column_pos in range(1, 8) and row_pos in range(2, 9):
+      column_pos -= 1
+      row_pos -= 1
+      positive_diagonal.append(a_h[column_pos] + str(row_pos))
+    return positive_diagonal
+
+  def get_negative(self):
+    negative_diagonal = []
+    column_pos = a_h.index(self.position[-2]) 
+    row_pos = int(self.position[-1]) 
+    while column_pos in range(7) and row_pos in range(2, 9):
+      column_pos += 1
+      row_pos -= 1
+    negative_diagonal.append(a_h[column_pos] + str(row_pos))
+    while column_pos in range(1, 8) and row_pos in range(8):
+      column_pos -= 1
+      row_pos += 1
+      negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
+    return negative_diagonal
+  
+  def legal(self, board, move):
+    if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
+      return True
+    else:
+      return False
+
+  def blegal(self, board, move):
+      if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
+          self.piece_move(board, move)
+      else:
+          print("Bro you can't do that")
+
+class Rook(Piece):
+  def __init__(self, color, notation, position, moved):
+    super().__init__(color, notation, position, moved)
+
+  def get_column(self):
+    column = []
+    for i in range(1, 9):
+        square = a_h[a_h.index(self.position[-2])] + str(i)
+        column.append(square)
+    return column
+  
+  def get_row(self):
+    row = []
+    for letter in a_h:
+        row.append(letter + self.position[-1])
+    return row
+
+  def legal(self, board, move):
+    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True:
+      return True
+    else:
+      return False
+  
+  def rlegal(self, board, move):
+    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True:
+      self.piece_move(move)
+    else:
+      print("Bro you can't do that")
 
 def printboard():
     layout.reverse()
@@ -261,14 +329,3 @@ def printboard():
     for thing in layout:
         print(next(num), end = " ")
         print(" ".join(thing))
-queen = Queen(True, "🆀", "a1", True)
-pawn1 = Pawn(False, "🄿", "g4", True, False, "g")
-pawn2 = Pawn(True, "🅿", "b4", True, True, "b")
-pawn3 = Pawn(False, "🄿", "e7", False, False, "e")
-pawn4 = Pawn(True, "🅿", "e2", False, False, "e")
-layout[int(queen.position[-1]) - 1][a_h.index(queen.position[-2])] = queen.notation
-layout[int(pawn1.position[-1]) - 1][a_h.index(pawn1.position[-2])] = pawn1.notation
-layout[int(pawn2.position[-1]) - 1][a_h.index(pawn2.position[-2])] = pawn2.notation
-layout[int(pawn3.position[-1]) - 1][a_h.index(pawn3.position[-2])] = pawn3.notation
-layout[int(pawn4.position[-1]) - 1][a_h.index(pawn4.position[-2])] = pawn4.notation
-print(queen.get_positive())
