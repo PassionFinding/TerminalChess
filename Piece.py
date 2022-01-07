@@ -1,7 +1,7 @@
 from string import ascii_lowercase as wordbabies
 from Chess import layout
 a_h = list(wordbabies[:8])
-class Piece: #Needs check function, and a take one
+class Piece: 
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
   black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
   def __init__(self, color, notation, position, moved):
@@ -11,10 +11,15 @@ class Piece: #Needs check function, and a take one
     self.moved = moved
 
   def checker(self, board, list_of_pieces, king):
-    test_board = board
+    test_board = []
+    for item in board:
+      test_board.append(item)
     test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
     for piece in list_of_pieces:
-      pass
+      if piece.legal(test_board, king.position) == True:
+        return True
+      else:
+        return False
 
   def llegal(self, list_of_moves, board, move): 
     legal_list = [] 
@@ -112,12 +117,20 @@ class Pawn(Piece): #needs en passant and promotion
         else:
             return False
 
-    def plegal(self, board, move):
-        if self.legal(board, move) == True:
+    def plegal(self, board, move, list_of_pieces, king):
+        if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
             self.piece_move(board, move)
             self.current_column = self.position[-2]
         else:
             print("Bro you can't do that")
+            board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class King(Piece): #Needs castling
     def __init__(self, color, notation, position, moved):
@@ -136,7 +149,7 @@ class King(Piece): #Needs castling
         possible_moves = [front, back, left, right, front_left, front_right, back_left, back_right]
 
         for possible in possible_moves:
-            if alo == a_h[possible[1]] + str(possible[0]) and possible[-1] in range(8) and possible[-2] in range(8):
+            if possible[-1] in range(8) and possible[-2] in range(8) and alo == a_h[possible[1]] + str(possible[0]):
                 if (board[possible[0]][possible[1]] == "⬚" or (board[possible[0]][possible[1]] in 
             self.black_notation and self.color == True) or (board[possible[0]][possible[1]] in self.white_notation and self.color == False)):
                     return True
@@ -145,15 +158,25 @@ class King(Piece): #Needs castling
                     continue
             else:
                 continue
+        return False
     
     def castle(self, board, black_pieces, white_pieces):
           pass
     
-    def klegal (self, board, move):
-        if self.legal(board, move) == True:
+    def klegal (self, board, move, list_of_pieces, king):
+        if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
             self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
         else:
             print("nah")
+            board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class Knight(Piece):
   def __init__(self, color, notation, position, moved):
@@ -184,11 +207,20 @@ class Knight(Piece):
           continue
 
 
-  def nlegal(self, board, move):
-    if self.legal(board, move) == True:
-        self.piece_move(board, move)
+  def nlegal(self, board, move, list_of_pieces, king):
+    if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
     else:
         print("Bro you can't do that")
+        board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class Queen(Piece):
   def __init__(self, color, notation, position, moved):
@@ -241,11 +273,20 @@ class Queen(Piece):
     else:
       return False
 
-  def qlegal(self, board, move):
-      if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
-          self.piece_move(board, move)
+  def qlegal(self, board, move, list_of_pieces, king):
+      if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
       else:
           print("Bro you can't do that")
+          board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class Bishop(Piece):
   def __init__(self, color, notation, position, moved):
@@ -285,11 +326,20 @@ class Bishop(Piece):
     else:
       return False
 
-  def blegal(self, board, move):
-      if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
-          self.piece_move(board, move)
+  def blegal(self, board, move, list_of_pieces, king):
+      if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
       else:
           print("Bro you can't do that")
+          board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class Rook(Piece):
   def __init__(self, color, notation, position, moved):
@@ -314,11 +364,20 @@ class Rook(Piece):
     else:
       return False
   
-  def rlegal(self, board, move):
-    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True:
-      self.piece_move(move)
+  def rlegal(self, board, move, list_of_pieces, king):
+    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+          if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
+            for piece in list_of_pieces:
+              if piece.position == move:
+                list_of_pieces.remove(piece)
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
+          else:
+            self.piece_move(board, move)
+            self.current_column = self.position[-2]
     else:
       print("Bro you can't do that")
+      board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 def printboard():
     layout.reverse()
@@ -329,3 +388,13 @@ def printboard():
     for thing in layout:
         print(next(num), end = " ")
         print(" ".join(thing))
+
+pawn = Pawn(True, "🅿", "a2", True, True, "a") 
+pawn2 = Pawn(False, "🄿", "b3", True, False, "b")
+king = King(True, "K", "h8", True)
+black_pieces = [pawn2]
+layout[int(pawn.position[-1]) - 1][a_h.index(pawn.position[-2])] = pawn.notation
+layout[int(pawn2.position[-1]) - 1][a_h.index(pawn2.position[-2])] = pawn2.notation
+pawn.plegal(layout, "b3", black_pieces, king)
+printboard()
+print(black_pieces)
