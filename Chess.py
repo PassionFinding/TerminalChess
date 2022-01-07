@@ -86,20 +86,22 @@ black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
 #     for item in white_pieces:
 #         layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
 
-# def white_short_castle():
-#     if layout[0][5] != "⬚" or layout[0][6] != "⬚" or white_king.moved == True or white_right_rook.moved == True:
-#         print("Can't castle!")
-#     else:
-#         for piece in black_pieces:
-#             if piece.legal("e1") == True or piece.legal("f1") == True or piece.legal("g1") == True or piece.legal("h1") == True:
-#                 print("Can't castle!")
-#                 break
-#             else:
-#                 layout[0][4] = "⬚"
-#                 layout[0][7] = "⬚"
-#                 layout[0][5] = "🆁"
-#                 layout[0][6] = "🅺"
-#                 break
+def castle(board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move):
+  if move == "O-O" or move == "o-o":
+    if board[0][5] != "⬚" or board[0][6] != "⬚" or white_king.moved == True or white_right_rook.moved == True:
+      print("Can't castle!")
+    else:
+      for piece in list_of_black_pieces:
+        if piece.legal(board, "e1") == True or piece.legal(board, "f1") == True or piece.legal(board, "g1") == True or piece.legal(board, "h1") == True:
+          print("Can't castle!")
+          break
+        else:
+          
+                board[0][4] = "⬚"
+                board[0][7] = "⬚"
+                board[0][5] = "🆁"
+                board[0][6] = "🅺"
+                break
 # def white_long_castle():
 #     if layout[0][1] != "⬚" or layout[0][2] != "⬚" or layout[0][3] != "⬚" or white_king.moved == True or white_left_rook.moved == True:
 #         print("Can't castle!")
