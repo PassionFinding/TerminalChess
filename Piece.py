@@ -79,7 +79,7 @@ class Pawn(Piece): #needs en passant and promotion
         self.passantable = passantable
         self.current_column = self.position[0]
     #The actual board in Chess.py will be substituted for board
-    def legal(self, board, move, black_pawns, white_pawns):
+    def legal(self, board, move, black_pawns, white_pawns, black_pieces, white_pieces):
         square = [int(move[-1]) - 1, a_h.index(move[-2])]
         black_front = [int(self.position[-1])-2, a_h.index(self.position[-2])]
         black_double_front = [int(self.position[-1])-3, a_h.index(self.position[-2])]
@@ -91,38 +91,50 @@ class Pawn(Piece): #needs en passant and promotion
         white_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
         white_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
 
-        right = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) + 1]
-        left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
-
         moves = [white_front, white_double_front, white_right, white_left, black_front, black_double_front, black_right, black_left]
+        possibilities = []
         def possible_moves(): 
-            possibilities = []
             for move in moves:
                 if move[-2] in range(8) and move[-1] in range(8):
                     possibilities.append(move)
                 else:
                     continue
-            return possibilities
-        if square in possible_moves():
-            if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
-                self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
-            ):
-                self.passantable = True
-                return True
-            elif (self.color == True and square == white_front and board[square[-2]][square[-1]] == "⬚") or (self.color == False and square == black_front and board[square[-2]][square[-1]] == "⬚"):
-                self.passantable = False
-                return True
-            elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] in self.black_notation)  or (
-                self.color == False and (square == black_left or square == black_right) and board[square[-2]][square[-1]] in self.white_notation
-            ):
-                self.passantable = False
-                return True
-            elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] == "⬚"):
-              
-            else:
-                return False
-        else:
-            return False
+        possible_moves()
+        print(square)
+        # if square in possibilities:
+        #     if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
+        #         self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
+        #     ):
+        #         self.passantable = True
+        #         return True
+        #     elif (self.color == True and square == white_front and board[square[-2]][square[-1]] == "⬚") or (self.color == False and square == black_front and board[square[-2]][square[-1]] == "⬚"):
+        #         self.passantable = False
+        #         return True
+        #     elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] in self.black_notation)  or (
+        #         self.color == False and (square == black_left or square == black_right) and board[square[-2]][square[-1]] in self.white_notation
+        #     ):
+        #         self.passantable = False
+        #         return True
+        #     elif ((square == white_right or square == white_left) and board[square[-2]][square[-1]] == "⬚"):
+        #       if self.color == True:
+        #           if board[square[-1]-1][square[-2]] == "🄿":
+        #                 for pawn in black_pawns:
+        #                       if pawn.position == a_h[self.position[-2]] + str(int(square[-1])-1) and pawn.passantable == True:
+        #                             black_pieces.remove(pawn)
+        #                             board[square[-1]-1][square[-2]] = "⬚"
+        #                             return True
+        #       else:
+        #           if board[square[-1]+1][square[-2]] == "🅿":
+        #                 for pawn in white_pawns:
+        #                       if pawn.position == a_h[self.position[-2]] + str(int(square[-1])+1) and pawn.passantable == True:
+        #                             white_pieces.remove(pawn)
+        #                             board[square[-1]+1][square[-2]] = "⬚"
+        #                             return True
+                              
+        #     else:
+        #         return False
+        # else:
+        #     return False
 
     def plegal(self, board, move, list_of_pieces, king):
         if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
@@ -438,24 +450,29 @@ def printboard():
         print(" ".join(thing))
 
 
-wking = King(True, "🅺", "e1", False)
-rwrook = Rook(True, "🆁", "h1", False)
-lwrook = Rook(True, "🆁", "a1", False)
-bking = King(False, "🄺", "e8", False)
-rbrook = Rook(False, "🅁", "e7", True)
-lbrook = Rook(False, "🅁", "h8", False)
-layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
-layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
-layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
-layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
-layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
-layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
-black_pieces = [bking, rbrook, lbrook]
-white_pieces = [wking, rwrook, lwrook]
-print(black_pieces)
-print(rbrook.legal(layout, wking.position))
-turn = True
+# wking = King(True, "🅺", "e1", False)
+# rwrook = Rook(True, "🆁", "h1", False)
+# lwrook = Rook(True, "🆁", "a1", False)
+# bking = King(False, "🄺", "e8", False)
+# rbrook = Rook(False, "🅁", "e7", True)
+# lbrook = Rook(False, "🅁", "h8", False)
+# layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
+# layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
+# layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
+# layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
+# layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
+# layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
+# black_pieces = [bking, rbrook, lbrook]
+# white_pieces = [wking, rwrook, lwrook]
+# print(black_pieces)
+# print(rbrook.legal(layout, wking.position))
+# turn = True
 # wking.castle(wking, rwrook, lwrook, bking, rbrook, lbrook, white_pieces, black_pieces, "O-O", turn)
 # line 165, in castle
 #TypeError: 'King' object is not subscriptable
 # printboard()
+pawn1 = Pawn(True, "🅿", "c5", True, False, "c")
+pawn2 = Pawn(False, "🄿", "d5", True, False, "d")
+black_pawns = [pawn2]
+white_pawns = [pawn1]
+# print(pawn1.legal(layout, "d6", black_pawns, white_pawns, black_pawns, white_pawns))
