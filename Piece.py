@@ -100,41 +100,39 @@ class Pawn(Piece): #needs en passant and promotion
                 else:
                     continue
         possible_moves()
-        print(square)
-        # if square in possibilities:
-        #     if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
-        #         self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
-        #     ):
-        #         self.passantable = True
-        #         return True
-        #     elif (self.color == True and square == white_front and board[square[-2]][square[-1]] == "⬚") or (self.color == False and square == black_front and board[square[-2]][square[-1]] == "⬚"):
-        #         self.passantable = False
-        #         return True
-        #     elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] in self.black_notation)  or (
-        #         self.color == False and (square == black_left or square == black_right) and board[square[-2]][square[-1]] in self.white_notation
-        #     ):
-        #         self.passantable = False
-        #         return True
-        #     elif ((square == white_right or square == white_left) and board[square[-2]][square[-1]] == "⬚"):
-        #       if self.color == True:
-        #           if board[square[-1]-1][square[-2]] == "🄿":
-        #                 for pawn in black_pawns:
-        #                       if pawn.position == a_h[self.position[-2]] + str(int(square[-1])-1) and pawn.passantable == True:
-        #                             black_pieces.remove(pawn)
-        #                             board[square[-1]-1][square[-2]] = "⬚"
-        #                             return True
-        #       else:
-        #           if board[square[-1]+1][square[-2]] == "🅿":
-        #                 for pawn in white_pawns:
-        #                       if pawn.position == a_h[self.position[-2]] + str(int(square[-1])+1) and pawn.passantable == True:
-        #                             white_pieces.remove(pawn)
-        #                             board[square[-1]+1][square[-2]] = "⬚"
-        #                             return True
-                              
-        #     else:
-        #         return False
-        # else:
-        #     return False
+        if square in possibilities:
+            if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
+                self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
+            ):
+                self.passantable = True
+                return True
+            elif (self.color == True and square == white_front and board[square[-2]][square[-1]] == "⬚") or (self.color == False and square == black_front and board[square[-2]][square[-1]] == "⬚"):
+                self.passantable = False
+                return True
+            elif (self.color == True and (square == white_right or square == white_left) and board[square[-2]][square[-1]] in self.black_notation)  or (
+                self.color == False and (square == black_left or square == black_right) and board[square[-2]][square[-1]] in self.white_notation
+            ):
+                self.passantable = False
+                return True
+            elif ((square == white_right or square == white_left) or (square == black_right or square == black_left) and board[square[-2]][square[-1]] == "⬚"):
+              if self.color == True:
+                  if board[square[0]-1][square[1]] == "🄿": 
+                        for pawn in black_pawns:
+                              if pawn.position == a_h[square[1]] + str(square[0]) and pawn.passantable == True:
+                                black_pieces.remove(pawn)
+                                board[square[-1]-1][square[-2]] = "⬚"
+                                return True
+              else:
+                if board[square[0]+1][square[1]] == "🅿":
+                        for pawn in white_pawns:
+                              if pawn.position == a_h[(square[1])] + str(square[0] + 2) and pawn.passantable == True:
+                                    white_pieces.remove(pawn)
+                                    board[square[-1]+1][square[-2]] = "⬚"
+                                    return True
+            else:
+                return False
+        else:
+            return False
 
     def plegal(self, board, move, list_of_pieces, king):
         if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
@@ -471,8 +469,11 @@ def printboard():
 # line 165, in castle
 #TypeError: 'King' object is not subscriptable
 # printboard()
-pawn1 = Pawn(True, "🅿", "c5", True, False, "c")
-pawn2 = Pawn(False, "🄿", "d5", True, False, "d")
-black_pawns = [pawn2]
-white_pawns = [pawn1]
-# print(pawn1.legal(layout, "d6", black_pawns, white_pawns, black_pawns, white_pawns))
+# pawn1 = Pawn(True, "🅿", "g4", True, True, "c")
+# pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
+# layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
+# layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
+# black_pawns = [pawn2]
+# white_pawns = [pawn1]
+# print(pawn2.legal(layout, "g3", black_pawns, white_pawns, black_pawns, white_pawns))
+# printboard()
