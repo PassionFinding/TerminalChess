@@ -10,18 +10,39 @@ class Piece:
     self.position = position
     self.moved = moved
 
-  def checker(self, board, list_of_pieces, king):
-    test_board = []
-    for item in board:
-      test_board.append(item)
-    test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
-    for piece in list_of_pieces:
-      if piece.legal(test_board, king.position) == True:
-        test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-        return True
-      else:
-        test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-        return False
+#Pawn has its own version of checker because it needs extra parameters for piece.legal
+#You need to add an extra condition to check if the move unpins the piece by taking the pinning piece.
+  def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+      test_board = []
+      for item in board:
+        test_board.append(item)
+      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
+      test_board[int(move[-1])-1][a_h.index(move[0])] = self.notation #rook.checker doesn't work because you alter its position before you call self.legal, and then it returns False
+      for piece in list_of_pieces:
+        if type(piece) == Pawn:
+          if piece.legal(test_board, king.position, black_pawns, white_pawns, black_pieces, white_pieces) == True:
+            #if king is in check, then if your mvoe is the take the checking piece and that move is legal, continue.
+            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
+              continue
+            else: 
+              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+              test_board[int(move[-1])-1][a_h.index(move[0])] = piece.notation
+              return True
+          else:
+            continue
+        else:
+          if piece.legal(test_board, king.position) == True:
+            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)): 
+              continue
+            else:
+              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+              test_board[int(move[-1])-1][a_h.index(move[0])] = piece.notation
+              return True
+          else:
+            continue
+      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+      test_board[int(move[-1])-1][a_h.index(move[0])] = "⬚"
+      return False
 
   def llegal(self, list_of_moves, board, move): 
     legal_list = [] 
@@ -73,7 +94,7 @@ class Piece:
     self.position = str(p_move[-2]) + str(p_move[-1])    
     self.moved = True
 
-class Pawn(Piece): #needs en passant and promotion
+class Pawn(Piece): #needs promotion
     def __init__(self, color, notation, position, moved, passantable, current_column):
         super().__init__(color, notation, position, moved)
         self.passantable = passantable
@@ -133,6 +154,34 @@ class Pawn(Piece): #needs en passant and promotion
                 return False
         else:
             return False
+    
+    def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+      test_board = []
+      for item in board:
+        test_board.append(item)
+      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
+      for piece in list_of_pieces:
+        if type(piece) == Pawn:
+          if piece.legal(test_board, king.position, black_pawns, white_pawns, black_pieces, white_pieces) == True:
+            #if king is in check, then if your mvoe is the take the checking piece and that move is legal, continue.
+            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
+              continue
+            else: 
+              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+              return True
+          else:
+            continue
+        else:
+          if piece.legal(test_board, king.position) == True:
+            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
+              continue
+            else:
+              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+              return True
+          else:
+            continue
+      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
+      return False
 
     def plegal(self, board, move, list_of_pieces, king):
         if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
@@ -147,7 +196,6 @@ class Pawn(Piece): #needs en passant and promotion
             self.current_column = self.position[-2]
         else:
             print("Bro you can't do that")
-            board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
 
 class King(Piece):
     def __init__(self, color, notation, position, moved):
@@ -448,19 +496,19 @@ def printboard():
         print(" ".join(thing))
 
 
-# wking = King(True, "🅺", "e1", False)
+wking = King(True, "🅺", "e5", False)
 # rwrook = Rook(True, "🆁", "h1", False)
 # lwrook = Rook(True, "🆁", "a1", False)
 # bking = King(False, "🄺", "e8", False)
 # rbrook = Rook(False, "🅁", "e7", True)
 # lbrook = Rook(False, "🅁", "h8", False)
-# layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
+layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
 # layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
 # layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
 # layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
 # layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
 # layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
-# black_pieces = [bking, rbrook, lbrook]
+# black_pieces = []
 # white_pieces = [wking, rwrook, lwrook]
 # print(black_pieces)
 # print(rbrook.legal(layout, wking.position))
@@ -469,11 +517,18 @@ def printboard():
 # line 165, in castle
 #TypeError: 'King' object is not subscriptable
 # printboard()
-# pawn1 = Pawn(True, "🅿", "g4", True, True, "c")
-# pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
-# layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
-# layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
-# black_pawns = [pawn2]
-# white_pawns = [pawn1]
-# print(pawn2.legal(layout, "g3", black_pawns, white_pawns, black_pawns, white_pawns))
-# printboard()
+
+pawn1 = Pawn(True, "🅿", "g6", True, True, "c")
+pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
+layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
+layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
+queen = Queen(False, "🅀", "h5", True)
+layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
+rook = Rook(True, "🆁", "f5", True)
+layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
+black_pieces = [pawn2, queen]
+black_pawns = [pawn2]
+white_pawns = [pawn1]
+white_pieces = [pawn1, wking, rook]
+print(rook.checker(layout, "h5", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
+printboard()
