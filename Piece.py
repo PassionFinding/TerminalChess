@@ -1,5 +1,6 @@
 from string import ascii_lowercase as wordbabies
 from Chess import layout
+import copy
 a_h = list(wordbabies[:8])
 class Piece: 
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
@@ -11,22 +12,22 @@ class Piece:
     self.moved = moved
 
 #Pawn has its own version of checker because it needs extra parameters for piece.legal
-#You need to add an extra condition to check if the move unpins the piece by taking the pinning piece.
   def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
-      test_board = []
-      for item in board:
-        test_board.append(item)
+      test_board = copy.deepcopy(board)
       test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
-      test_board[int(move[-1])-1][a_h.index(move[0])] = self.notation #rook.checker doesn't work because you alter its position before you call self.legal, and then it returns False
+      test_board[int(move[-1])-1][a_h.index(move[0])] = self.notation
+      if type(self) == King:
+        orig_pos = []
+        orig_pos.append(self.position)
+        self.position = move
       for piece in list_of_pieces:
         if type(piece) == Pawn:
           if piece.legal(test_board, king.position, black_pawns, white_pawns, black_pieces, white_pieces) == True:
-            #if king is in check, then if your mvoe is the take the checking piece and that move is legal, continue.
             if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
               continue
             else: 
-              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-              test_board[int(move[-1])-1][a_h.index(move[0])] = piece.notation
+              if type(self) == King:
+                self.position = orig_pos
               return True
           else:
             continue
@@ -35,13 +36,13 @@ class Piece:
             if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)): 
               continue
             else:
-              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-              test_board[int(move[-1])-1][a_h.index(move[0])] = piece.notation
+              if type(self) == King:
+                self.position = orig_pos
               return True
           else:
             continue
-      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-      test_board[int(move[-1])-1][a_h.index(move[0])] = "⬚"
+      if type(self) == King:
+        self.position = orig_pos
       return False
 
   def llegal(self, list_of_moves, board, move): 
@@ -523,12 +524,15 @@ pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
 layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
 layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
 queen = Queen(False, "🅀", "h5", True)
+queen2 = Queen(False, "🅀", "a5", True)
 layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
+layout[int(queen2.position[-1])-1][a_h.index(queen2.position[0])] = queen2.notation
 rook = Rook(True, "🆁", "f5", True)
 layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
-black_pieces = [pawn2, queen]
+black_pieces = [pawn2, queen, queen2]
 black_pawns = [pawn2]
 white_pawns = [pawn1]
 white_pieces = [pawn1, wking, rook]
-print(rook.checker(layout, "h5", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
+print(wking.checker(layout, "f6", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
 printboard()
+
