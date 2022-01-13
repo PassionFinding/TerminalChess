@@ -155,7 +155,17 @@ class Pawn(Piece): #needs promotion
                 return False
         else:
             return False
-    
+    def promotion(self, list_white, list_black, board):
+      if self.position[-1] == "8":
+        promote = input("Pawn promotion to?")
+        if promote == "Q" or promote == "q":
+          if self.color == True:
+            list_white.remove(self)
+            #I need to initialize a new object to take the pawn's place once it becomes promoted. Maybe premake 32 pieces for each side, put them in a list,
+            #Then pull a piece from the list every time you need it?
+            #Maybe create a function within the promotion method that creates a new piece?
+            
+
     def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
       test_board = []
       for item in board:

@@ -28,7 +28,7 @@ black_pieces = [bking]
 white_pieces = [wking, rwrook, lwrook, pawn1]
 # print(rbrook.legal(layout, wking.position))
 turn = True
-wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, black_pieces, "O-O-O", turn, [], [])
+# wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, black_pieces, "O-O-O", turn, [], [])
 
 # pawn1 = Pawn(True, "🅿", "c1", True, True, "c")
 # pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
@@ -45,4 +45,37 @@ wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, bla
 # white_pawns = [pawn1]
 # white_pieces = [pawn1, wking, rook]
 # print(wking.checker(layout, "f6", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
-printboard()
+# printboard()
+
+class Nothing:
+    def __init__(self, name):
+        self.name = name
+class MoreNothing:
+    pass
+# class Something:
+#     def change(self, list):
+#         list.remove(self)
+#         self = Nothing()
+#         list.append(self)
+# thing = Something()
+# stuff = [thing]
+# print(type(thing))
+# # thing.change(stuff)
+# print(type(stuff[0]))
+# print(stuff)
+
+counter = 1
+suh = Nothing('bob')
+list = []
+name = suh.name + str(counter)
+def f(counter):
+    counter += 1
+
+name = MoreNothing()
+list.append(name)
+f(counter)
+name = MoreNothing()
+list.append(name)
+print(list)
+print(name.name)
+#THIS WORKS
