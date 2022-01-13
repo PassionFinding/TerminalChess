@@ -226,49 +226,78 @@ class King(Piece):
                 continue
         return False
     
-    def castle(board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move, turn):
+    def castle(board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move, turn, black_pawns, white_pawns):
       if (move == "O-O" or move == "o-o") and turn == True:
         if board[0][5] != "⬚" or board[0][6] != "⬚" or white_king.moved == True or white_right_rook.moved == True:
-          print("Can't castle!")
+          return print("Can't castle!")
         else:
           for piece in list_of_black_pieces:
-            if piece.legal(board, "e1") == True or piece.legal(board, "f1") == True or piece.legal(board, "g1") == True or piece.legal(board, "h1") == True:
-              return print("Can't castle!")
-              break
+            if type(piece) == Pawn:
+              if piece.legal(board, "e1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "f1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "g1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "h1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True:
+                return print("Can't castle!")
+              else:
+                continue
+            else:
+              if piece.legal(board, "e1") == True or piece.legal(board, "f1") == True or piece.legal(board, "g1") == True or piece.legal(board, "h1") == True:
+                return print("Can't castle!")
+              else:
+                continue
           white_king.piece_move(board, "g1")
           white_right_rook.piece_move(board, "f1")
       elif (move == "O-O" or move == "o-o") and turn == False:
         if layout[7][5] != "⬚" or layout[7][6] != "⬚" or black_king.moved == True or black_left_rook.moved == True:
-          print("Can't castle!")
+          return print("Can't castle!")
         else:
           for piece in list_of_white_pieces:
-            if piece.legal(board, "e8") == True or piece.legal(board, "f8") == True or piece.legal(board, "g8") == True or piece.legal(board, "h8") == True:
-              return print("Can't castle!")
-              break
+            if type(piece) == Pawn:
+              if piece.legal(board, "e8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "f8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "g8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "h8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True:
+                return print("Can't castle!")
+              else:
+                continue
+            else:
+
+              if piece.legal(board, "e8") == True or piece.legal(board, "f8") == True or piece.legal(board, "g8") == True or piece.legal(board, "h8") == True:
+                return print("Can't castle!")
+              else:
+                continue
           black_king.piece_move(board, "g8")
           black_left_rook.piece_move(board, "f8")
       elif (move == "O-O-O" or move == "o-o-o") and turn == True:
         if layout[0][1] != "⬚" or layout[0][2] != "⬚" or layout[0][3] != "⬚" or white_king.moved == True or white_left_rook.moved == True:
-          print("Can't castle!")
+          return print("Can't castle!")
         else:
           for piece in list_of_black_pieces:
-            if piece.legal("e1") == True or piece.legal("d1") == True or piece.legal("c1") == True or piece.legal("b1") == True or piece.legal("a1") == True:
-              return print("Can't castle!")
-              break
+            if type(piece) == Pawn:
+              if piece.legal(board, "e1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "d1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "c1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "b1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "a1", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True:
+                return print("Can't castle!")
+              else:
+                continue
+            else:
+              if piece.legal("e1") == True or piece.legal("d1") == True or piece.legal("c1") == True or piece.legal("b1") == True or piece.legal("a1") == True:
+                return print("Can't castle!")
+              else:
+                continue
           white_king.piece_move(board, "c1")
           white_right_rook.piece_move(board, "d1")
       elif (move == "O-O-O" or move == "o-o-o") and turn == False:
         if layout[7][1] != "⬚" or layout[7][2] != "⬚" or layout[7][3] != "⬚" or black_king.moved == True or black_left_rook.moved == True:
-          print("Can't castle!")
+          return print("Can't castle!")
         else:
           for piece in list_of_white_pieces:
-            if piece.legal("e8") == True or piece.legal("d8") == True or piece.legal("c8") == True or piece.legal("b8") == True or piece.legal("a8") == True:
-              return print("Can't castle!")
-              break
+            if type(piece) == Pawn:
+              if piece.legal(board, "e8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "d8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "c8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "b8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True or piece.legal(board, "a8", black_pawns, white_pawns, list_of_black_pieces, list_of_white_pieces) == True:
+                return print("Can't castle!")
+              else:
+                continue
+            else:
+              if piece.legal("e8") == True or piece.legal("d8") == True or piece.legal("c8") == True or piece.legal("b8") == True or piece.legal("a8") == True:
+                return print("Can't castle!")
+              else:
+                continue
           black_king.piece_move(board, "c8")
           black_right_rook.piece_move(board, "d8")
       else:
-        pass
+        print("Either you made a typo that began with an O, an invalid castling request format (only all uppercase or all lowercase), or you're trying to break the game (just play normally bro, I'm one person).")
     
     def klegal (self, board, move, list_of_pieces, king):
         if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
