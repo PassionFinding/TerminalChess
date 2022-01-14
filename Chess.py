@@ -66,7 +66,7 @@ black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
 # def reverseboard():
 #     numb = list(range(1, 9))
 #     num = iter(numb)
-#     print("  🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷")
+#     print("  H G F E D C B A")
 #     for thing in layout:
 #         print(next(num), end = " ")
 #         print(" ".join(thing))

@@ -94,7 +94,8 @@ class Piece:
     board[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
     self.position = str(p_move[-2]) + str(p_move[-1])    
     self.moved = True
-
+#Note to self 1/14/21: You need to add the pawn class at the end, and you need to edit the checker for each classes legal function since checker has 4000 parameters
+#And for the game function in King class, for each move, if checker returns false and legal returns true, return False, else, continue, then at the end return True.
 class Pawn(Piece): #needs promotion
     def __init__(self, color, notation, position, moved, passantable, current_column):
         super().__init__(color, notation, position, moved)
@@ -165,6 +166,51 @@ class Pawn(Piece): #needs promotion
             queen = Queen(True, "🆀", self.position, False)
             board[int(self.position[1])-1][a_h.index(self.position[0])] = "🆀"
             list_white.append(queen)
+          else:
+            list_black.remove(self)
+            list_black_pawns.remove(self)
+            queen = Queen(False, "🅀", self.position, False)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🅀"
+            list_black.append(queen)
+        elif promote == "R" or promote == "r":
+          if self.color == True:
+            list_white.remove(self)
+            list_white_pawns.remove(self)
+            rook = Rook(True, "🆁", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🆁"
+            list_white.append(rook)
+          else:
+            list_black.remove(self)
+            list_black_pawns.remove(self)
+            rook = Rook(False, "🅁", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🅁"
+            list_black.append(rook)
+        elif promote == "B" or promote == "b":
+          if self.color == True:
+            list_white.remove(self)
+            list_white_pawns.remove(self)
+            bishop = Bishop(True, "🅱", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🅱"
+            list_white.append(bishop)
+          else:
+            list_black.remove(self)
+            list_black_pawns.remove(self)
+            bishop = Bishop(False, "🄱", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🄱"
+            list_black.append(bishop)
+        elif promote == "N" or promote == "n":
+          if self.color == True:
+            list_white.remove(self)
+            list_white_pawns.remove(self)
+            knight = Knight(True, "🅽", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🅽"
+            list_white.append(knight)
+          else:
+            list_black.remove(self)
+            list_black_pawns.remove(self)
+            knight = Knight(False, "🄽", self.position, True)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🄽"
+            list_black.append(knight)
             #I need to initialize a new object to take the pawn's place once it becomes promoted. Maybe premake 32 pieces for each side, put them in a list,
             #Then pull a piece from the list every time you need it?
             #Maybe create a function within the promotion method that creates a new piece?
@@ -239,6 +285,24 @@ class King(Piece):
             else:
                 continue
         return False
+    
+    def game(self, board):
+      front = [int(self.position[-1]), a_h.index(self.position[-2])]
+      back = [int(self.position[-1]) - 2, a_h.index(self.position[-2])]
+      left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
+      right = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) + 1]
+      front_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
+      front_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
+      back_left = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) - 1]
+      back_right = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) + 1]
+      possible_moves = [front, back, left, right, front_left, front_right, back_left, back_right]
+      only_moves = []
+      for move in possible_moves:
+        if move[-1] in range(8) and move[-2] in range(8):
+          only_moves.append(move)
+      for move in only_moves: 
+
+        
     
     def castle(self, board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move, turn, black_pawns, white_pawns):
       if (move == "O-O" or move == "o-o") and turn == True:
@@ -539,6 +603,10 @@ def printboard():
         print(next(num), end = " ")
         print(" ".join(thing))
 
-
-
-
+def reverseboard():
+    numb = list(range(1, 9))
+    num = iter(numb)
+    print("  H G F E D C B A")
+    for thing in layout:
+        print(next(num), end = " ")
+        print(" ".join(thing))

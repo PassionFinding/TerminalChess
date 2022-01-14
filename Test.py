@@ -10,6 +10,7 @@ from Piece import Bishop
 from Piece import Rook
 from Piece import Queen
 from Piece import printboard
+from Piece import reverseboard
 # wking = King(True, "🅺", "e1", False)
 # rwrook = Rook(True, "🆁", "h1", False)
 # lwrook = Rook(True, "🆁", "a1", False)
