@@ -155,12 +155,16 @@ class Pawn(Piece): #needs promotion
                 return False
         else:
             return False
-    def promotion(self, list_white, list_black, board):
+    def promotion(self, list_white, list_black, list_white_pawns, list_black_pawns, board):
       if self.position[-1] == "8":
         promote = input("Pawn promotion to?")
         if promote == "Q" or promote == "q":
           if self.color == True:
             list_white.remove(self)
+            list_white_pawns.remove(self)
+            queen = Queen(True, "🆀", self.position, False)
+            board[int(self.position[1])-1][a_h.index(self.position[0])] = "🆀"
+            list_white.append(queen)
             #I need to initialize a new object to take the pawn's place once it becomes promoted. Maybe premake 32 pieces for each side, put them in a list,
             #Then pull a piece from the list every time you need it?
             #Maybe create a function within the promotion method that creates a new piece?
@@ -307,7 +311,7 @@ class King(Piece):
           black_king.piece_move(board, "c8")
           black_right_rook.piece_move(board, "d8")
       else:
-        print("Either you made a typo that began with an O, an invalid castling request format (only all uppercase or all lowercase), or you're trying to break the game (just play normally bro, I'm one person).")
+        print("Either you made a typo that began with an O, an invalid castling request format (only all uppercase or all lowercase), or you're trying to break the game.")
     
     def klegal (self, board, move, list_of_pieces, king):
         if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:

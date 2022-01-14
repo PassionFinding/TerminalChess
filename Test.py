@@ -10,24 +10,24 @@ from Piece import Bishop
 from Piece import Rook
 from Piece import Queen
 from Piece import printboard
-wking = King(True, "🅺", "e1", False)
-rwrook = Rook(True, "🆁", "h1", False)
-lwrook = Rook(True, "🆁", "a1", False)
-bking = King(False, "🄺", "e8", False)
+# wking = King(True, "🅺", "e1", False)
+# rwrook = Rook(True, "🆁", "h1", False)
+# lwrook = Rook(True, "🆁", "a1", False)
+# bking = King(False, "🄺", "e8", False)
 # rbrook = Rook(False, "🅁", "a8", True)
 # lbrook = Rook(False, "🅁", "e7", False)
-layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
-layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
-layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
-layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
+# layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
+# layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
+# layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
+# layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
 # layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
 # layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
-pawn1 = Pawn(True, "🅿", "c1", True, True, "c")
+pawn1 = Pawn(True, "🅿", "c8", True, True, "c")
 layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
-black_pieces = [bking]
-white_pieces = [wking, rwrook, lwrook, pawn1]
+# black_pieces = [bking]
+white_pieces = [pawn1] #wking, rwrook, lwrook, 
 # print(rbrook.legal(layout, wking.position))
-turn = True
+# turn = True
 # wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, black_pieces, "O-O-O", turn, [], [])
 
 # pawn1 = Pawn(True, "🅿", "c1", True, True, "c")
@@ -42,40 +42,43 @@ turn = True
 # layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
 # black_pieces = [pawn2, queen, queen2]
 # black_pawns = [pawn2]
-# white_pawns = [pawn1]
+white_pawns = [pawn1]
 # white_pieces = [pawn1, wking, rook]
 # print(wking.checker(layout, "f6", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
 # printboard()
 
-class Nothing:
-    def __init__(self, name):
-        self.name = name
-class MoreNothing:
-    pass
-# class Something:
-#     def change(self, list):
-#         list.remove(self)
-#         self = Nothing()
-#         list.append(self)
-# thing = Something()
-# stuff = [thing]
-# print(type(thing))
-# # thing.change(stuff)
-# print(type(stuff[0]))
-# print(stuff)
+# class Nothing:
+#     def __init__(self, name, hi_mom):
+#         self.name = name
+#         self.hi_mom = hi_mom
+# class MoreNothing:
+#     def __init__(self, name, game):
+#         self.name = name
+#         self.game = game
+# bob = MoreNothing('Bob', 'Dolla Dolla Billz')
+# jamal = MoreNothing('Jamal', 'Idk bruh')
+# # class Something:
+# #     def change(self, list):
+# #         list.remove(self)
+# #         self = Nothing()
+# #         list.append(self)
+# # thing = Something()
+# stuff = [bob, jamal]
+# # print(type(thing))
+# # # thing.change(stuff)
+# # print(type(stuff[0]))
+# # print(stuff)
 
-counter = 1
-suh = Nothing('bob')
-list = []
-name = suh.name + str(counter)
-def f(counter):
-    counter += 1
+# def making_stuff(item):
+#     thing = Nothing(item.name, item.game)
+#     stuff.remove(item)
+#     stuff.append(thing)
 
-name = MoreNothing()
-list.append(name)
-f(counter)
-name = MoreNothing()
-list.append(name)
-print(list)
-print(name.name)
-#THIS WORKS
+# making_stuff(bob)
+# making_stuff(jamal)
+# print(stuff[1].hi_mom)
+pawn1.promotion(white_pieces, None, white_pawns, None, layout)
+print(white_pieces)
+print(white_pawns)
+print(white_pieces[0].legal(layout, "d8"))
+# IT WOKRRRRRRKS. The way for promotion to work is to just straight up create a new queen object with the pawn's characteristics.
