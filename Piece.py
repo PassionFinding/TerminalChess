@@ -2,6 +2,7 @@ from string import ascii_lowercase as wordbabies
 from Chess import layout
 import copy
 a_h = list(wordbabies[:8])
+move = True
 class Piece: 
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
   black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
@@ -88,15 +89,22 @@ class Piece:
     else:
       return False
 
-  def piece_move(self, board, p_move):
+  def piece_move(self, board, p_move, white_pawns, black_pawns):
   #player input will be set to p_move
     board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
     board[int(p_move[-1]) - 1][a_h.index(p_move[-2])] = self.notation
     self.position = str(p_move[-2]) + str(p_move[-1])    
     self.moved = True
-#Note to self 1/14/21: You need to add the pawn class at the end, and you need to edit the checker for each classes legal function since checker has 4000 parameters
-#And for the game function in King class, for each move, if checker returns false and legal returns true, return False, else, continue, then at the end return True.
-class Pawn(Piece): #needs promotion
+    if self.color == True:
+      move = False
+      for pawn in black_pawns:
+        pawn.passantable == False
+    else:
+      move = True
+      for pawn in white_pawns:
+        pawn.passantable == False
+
+class Pawn(Piece):
     def __init__(self, color, notation, position, moved, passantable, current_column):
         super().__init__(color, notation, position, moved)
         self.passantable = passantable
@@ -214,46 +222,17 @@ class Pawn(Piece): #needs promotion
             #I need to initialize a new object to take the pawn's place once it becomes promoted. Maybe premake 32 pieces for each side, put them in a list,
             #Then pull a piece from the list every time you need it?
             #Maybe create a function within the promotion method that creates a new piece?
-            
 
-    def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
-      test_board = []
-      for item in board:
-        test_board.append(item)
-      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
-      for piece in list_of_pieces:
-        if type(piece) == Pawn:
-          if piece.legal(test_board, king.position, black_pawns, white_pawns, black_pieces, white_pieces) == True:
-            #if king is in check, then if your mvoe is the take the checking piece and that move is legal, continue.
-            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
-              continue
-            else: 
-              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-              return True
-          else:
-            continue
-        else:
-          if piece.legal(test_board, king.position) == True:
-            if move == piece.position and ((type(self) == Pawn and self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True) or (type(self) != Pawn and self.legal(board, move) == True)):
-              continue
-            else:
-              test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-              return True
-          else:
-            continue
-      test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = self.notation
-      return False
-
-    def plegal(self, board, move, list_of_pieces, king):
-        if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+    def plegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+        if self.legal(board, move) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
+            self.piece_move(board, move, white_pawns, black_pawns)
             self.current_column = self.position[-2]
           else:
-            self.piece_move(board, move)
+            self.piece_move(board, move, white_pawns, black_pawns)
             self.current_column = self.position[-2]
         else:
             print("Bro you can't do that")
@@ -286,7 +265,7 @@ class King(Piece):
                 continue
         return False
     
-    def game(self, board):
+    def game(self, board, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
       front = [int(self.position[-1]), a_h.index(self.position[-2])]
       back = [int(self.position[-1]) - 2, a_h.index(self.position[-2])]
       left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
@@ -299,11 +278,18 @@ class King(Piece):
       only_moves = []
       for move in possible_moves:
         if move[-1] in range(8) and move[-2] in range(8):
-          only_moves.append(move)
+          move_nt = a_h[move[1]] + str(move[0] + 1)
+          only_moves.append(move_nt)
+        else:
+          continue
       for move in only_moves: 
+        if self.legal(board, move) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          return False
+        else:
+          continue
+      return True
 
         
-    
     def castle(self, board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move, turn, black_pawns, white_pawns):
       if (move == "O-O" or move == "o-o") and turn == True:
         if board[0][5] != "⬚" or board[0][6] != "⬚" or white_king.moved == True or white_right_rook.moved == True:
@@ -377,17 +363,15 @@ class King(Piece):
       else:
         print("Either you made a typo that began with an O, an invalid castling request format (only all uppercase or all lowercase), or you're trying to break the game.")
     
-    def klegal (self, board, move, list_of_pieces, king):
-        if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+    def klegal (self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+        if self.legal(board, move) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
           else:
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
         else:
             print("nah")
             board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
@@ -421,17 +405,15 @@ class Knight(Piece):
           continue
 
 
-  def nlegal(self, board, move, list_of_pieces, king):
-    if self.legal(board, move) == True and self.checker(board, list_of_pieces, king) == False:
+  def nlegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+    if self.legal(board, move) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
           else:
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
     else:
         print("Bro you can't do that")
         board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
@@ -487,17 +469,15 @@ class Queen(Piece):
     else:
       return False
 
-  def qlegal(self, board, move, list_of_pieces, king):
-      if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+  def qlegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+      if (self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True) and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
           else:
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
       else:
           print("Bro you can't do that")
           board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
@@ -540,17 +520,15 @@ class Bishop(Piece):
     else:
       return False
 
-  def blegal(self, board, move, list_of_pieces, king):
-      if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+  def blegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+      if (self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True) and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
           else:
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
       else:
           print("Bro you can't do that")
           board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation
@@ -578,17 +556,15 @@ class Rook(Piece):
     else:
       return False
   
-  def rlegal(self, board, move, list_of_pieces, king):
-    if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True and self.checker(board, list_of_pieces, king) == False:
+  def rlegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+    if (self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True) and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           if board[int(move[-1]) - 1][a_h.index(move[-2])] != "⬚":
             for piece in list_of_pieces:
               if piece.position == move:
                 list_of_pieces.remove(piece)
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
           else:
-            self.piece_move(board, move)
-            self.current_column = self.position[-2]
+            self.piece_move(board, move, white_pawns, black_pawns)
     else:
       print("Bro you can't do that")
       board[int(self.position[-1])-1][a_h.index(self.position[-2])] = self.notation

@@ -11,22 +11,22 @@ from Piece import Rook
 from Piece import Queen
 from Piece import printboard
 from Piece import reverseboard
-# wking = King(True, "🅺", "e1", False)
+wking = King(True, "🅺", "e1", False)
 # rwrook = Rook(True, "🆁", "h1", False)
 # lwrook = Rook(True, "🆁", "a1", False)
 # bking = King(False, "🄺", "e8", False)
 # rbrook = Rook(False, "🅁", "a8", True)
 # lbrook = Rook(False, "🅁", "e7", False)
-# layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
+layout[int(wking.position[-1])-1][a_h.index(wking.position[-2])] = wking.notation
 # layout[int(rwrook.position[-1])-1][a_h.index(rwrook.position[-2])] = rwrook.notation
 # layout[int(lwrook.position[-1])-1][a_h.index(lwrook.position[-2])] = lwrook.notation
 # layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
 # layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
 # layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
-pawn1 = Pawn(True, "🅿", "c8", True, True, "c")
-layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
+# pawn1 = Pawn(True, "🅿", "c8", True, True, "c")
+# layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
 # black_pieces = [bking]
-white_pieces = [pawn1] #wking, rwrook, lwrook, 
+# white_pieces = [pawn1] #wking, rwrook, lwrook, 
 # print(rbrook.legal(layout, wking.position))
 # turn = True
 # wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, black_pieces, "O-O-O", turn, [], [])
@@ -43,7 +43,7 @@ white_pieces = [pawn1] #wking, rwrook, lwrook,
 # layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
 # black_pieces = [pawn2, queen, queen2]
 # black_pawns = [pawn2]
-white_pawns = [pawn1]
+# white_pawns = [pawn1]
 # white_pieces = [pawn1, wking, rook]
 # print(wking.checker(layout, "f6", black_pieces, wking, black_pawns, white_pawns, black_pieces, white_pieces))
 # printboard()
@@ -78,8 +78,7 @@ white_pawns = [pawn1]
 # making_stuff(bob)
 # making_stuff(jamal)
 # print(stuff[1].hi_mom)
-pawn1.promotion(white_pieces, None, white_pawns, None, layout)
-print(white_pieces)
-print(white_pawns)
-print(white_pieces[0].legal(layout, "d8"))
-# IT WOKRRRRRRKS. The way for promotion to work is to just straight up create a new queen object with the pawn's characteristics.
+# pawn1.promotion(white_pieces, None, white_pawns, None, layout)
+# print(white_pieces)
+# print(white_pawns)
+# print(white_pieces[0].legal(layout, "d8"))
