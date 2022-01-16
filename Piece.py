@@ -1,3 +1,4 @@
+from re import T
 from string import ascii_lowercase as wordbabies
 import copy
 a_h = list(wordbabies[:8])
@@ -328,8 +329,51 @@ class King(Piece):
             continue
       return False
 
-    def stalemate(self, board, opponent_pieces, your_pieces):
-      pass #You're probably gonna have to have each class return a list of its moves in a method in order keep this method short.
+    def stalemate(self, board, opponent_pieces, your_pieces, black_pawns, white_pawns, black_pieces, white_pieces):
+      for piece in your_pieces:
+        if type(piece) == Pawn:
+          for move in piece.return_moves():
+            if piece.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True and piece.checker(board, move, opponent_pieces, self, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        elif type(piece) == King:
+          for move in piece.return_moves():
+            if piece.legal(board, move) and piece.checker(board, move, opponent_pieces, piece, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        elif type(piece) == Queen:
+          for move in piece.get_everything():
+            if piece.legal(board, move) and piece.checker(board, move, opponent_pieces, piece, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        elif type(piece) == Rook:
+          for move in piece.get_everything():
+            if piece.legal(board, move) and piece.checker(board, move, opponent_pieces, piece, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        elif type(piece) == Bishop:
+          for move in piece.get_everything():
+            if piece.legal(board, move) and piece.checker(board, move, opponent_pieces, piece, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        elif type(piece) == Knight:
+          for move in piece.get_everything():
+            if piece.legal(board, move) and piece.checker(board, move, opponent_pieces, piece, black_pawns, white_pawns, black_pieces, white_pieces):
+              return False
+            else:
+              continue
+          continue
+        return True
 
     def game(self, board, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
       front = [int(self.position[-1]), a_h.index(self.position[-2])]
@@ -443,6 +487,25 @@ class King(Piece):
 class Knight(Piece):
   def __init__(self, color, notation, position, moved):
     super().__init__(color, notation, position, moved)
+
+  def get_everything(self):
+      upper_upper_left = [int(self.position[-1]) + 1, a_h.index(self.position[-2]) - 1]
+      upper_upper_right = [int(self.position[-1]) + 1, a_h.index(self.position[-2]) + 1]
+      upper_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 2]
+      upper_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 2]
+      lower_left = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) - 2]
+      lower_right = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) + 2]
+      lower_lower_left = [int(self.position[-1]) - 3, a_h.index(self.position[-2]) - 1]
+      lower_lower_right = [int(self.position[-1]) - 3, a_h.index(self.position[-2]) + 1]
+      possible_moves = [upper_upper_left, upper_upper_right, upper_left, upper_right, lower_left, lower_right, lower_lower_left, lower_lower_right]
+      only_moves = []
+      for possible in possible_moves:
+        if possible[-1] in range(8) and possible[-2] in range(8):
+          official_notation = a_h[possible[1]] + str(possible[0] + 1)
+          only_moves.append(official_notation)
+        else:
+          continue
+      return only_moves
   
   def legal(self, board, move):
       #will be done from the perspective of white
@@ -525,9 +588,19 @@ class Queen(Piece):
       row_pos += 1
       negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
     return negative_diagonal
-
-  #make a function called return everything that calls positive, negative, row, and column and appends all four into a list of moves in order to return the queen's possible moves. 
   
+  def get_everything(self):
+    everything = []
+    for item in self.get_negative():
+      everything.append(item)
+    for item in self.get_positive():
+      everything.append(item)
+    for item in self.get_row():
+      everything.append(item)
+    for item in self.get_column():
+      everything.append(item)
+    return everything
+
   def legal(self, board, move):
     if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
       return True
@@ -578,6 +651,14 @@ class Bishop(Piece):
       negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
     return negative_diagonal
   
+  def get_everything(self):
+    everything = []
+    for item in self.get_positive():
+      everything.append(item)
+    for item in self.get_negative():
+      everything.append(item)
+    return everything
+  
   def legal(self, board, move):
     if self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
       return True
@@ -613,6 +694,14 @@ class Rook(Piece):
     for letter in a_h:
         row.append(letter + self.position[-1])
     return row
+  
+  def get_everything(self):
+    everything = []
+    for item in self.get_column():
+      everything.append(item)
+    for item in self.get_row():
+      everything.append(item)
+    return everything
 
   def legal(self, board, move):
     if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True:

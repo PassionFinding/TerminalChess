@@ -11,7 +11,7 @@ from Piece import Rook
 from Piece import Queen
 from Piece import printboard
 from Piece import reverseboard
-wking = King(True, "🅺", "e1", False)
+
 # rwrook = Rook(True, "🆁", "h1", False)
 # lwrook = Rook(True, "🆁", "a1", False)
 # bking = King(False, "🄺", "e8", False)
@@ -36,9 +36,9 @@ white_pawns = [pawn1]
 # pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
 # layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
 # layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
-# queen = Queen(False, "🅀", "h5", True)
+queen = Queen(False, "🅀", "e4", True)
 # queen2 = Queen(False, "🅀", "a5", True)
-# layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
+layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
 # layout[int(queen2.position[-1])-1][a_h.index(queen2.position[0])] = queen2.notation
 # rook = Rook(True, "🆁", "f5", True)
 # layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
@@ -83,4 +83,4 @@ white_pawns = [pawn1]
 # print(white_pieces)
 # print(white_pawns)
 # print(white_pieces[0].legal(layout, "d8"))
-print(wking.return_moves())
+print(queen.return_everything())
