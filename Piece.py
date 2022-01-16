@@ -375,7 +375,7 @@ class King(Piece):
           continue
         return True
 
-    def game(self, board, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
+    def game(self, board, opponent, king, black_pawns, white_pawns, black_pieces, white_pieces):
       front = [int(self.position[-1]), a_h.index(self.position[-2])]
       back = [int(self.position[-1]) - 2, a_h.index(self.position[-2])]
       left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
@@ -393,10 +393,14 @@ class King(Piece):
         else:
           continue
       for move in only_moves: 
-        if self.legal(board, move) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+        if self.legal(board, move) == True and self.checker(board, move, opponent, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           return False
         else:
           continue
+      if self.in_check(board, black_pawns, white_pawns, black_pieces, white_pieces, opponent) == True:
+        return True
+      else:
+        return False
 
         
     def castle(self, board, white_king, white_right_rook, white_left_rook, black_king, black_right_rook, black_left_rook, list_of_white_pieces, list_of_black_pieces, move, turn, black_pawns, white_pawns):

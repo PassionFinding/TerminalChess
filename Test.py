@@ -83,4 +83,3 @@ layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
 # print(white_pieces)
 # print(white_pawns)
 # print(white_pieces[0].legal(layout, "d8"))
-print(queen.return_everything())
