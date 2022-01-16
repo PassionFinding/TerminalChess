@@ -1,5 +1,4 @@
 from string import ascii_lowercase as wordbabies
-from Piece import Piece
 from Piece import Pawn
 from Piece import King
 from Piece import Knight
@@ -55,35 +54,36 @@ black_right_knight, black_left_knight, black_right_bishop, black_left_bishop, bl
 black_pawns = [black_a_pawn, black_b_pawn, black_c_pawn, black_d_pawn, black_e_pawn, black_f_pawn, black_g_pawn, black_h_pawn]
 
 def starting_board():
-    for item in black_pieces:
-        layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
-    for item in white_pieces:
-        layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
+  for item in black_pieces:
+    layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
+  for item in white_pieces:
+    layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
 
 def move(p_move):
-    square = p_move[-2]
-    notation = p_move[0]
-    clarification = p_move[1]
-    if move == True:
-        if notation in a_h:
-            pawns = []
-            for item in white_pieces:
-                if type(item) == Pawn:
-                    pawns.append(item)
-            for item in pawns:
-                if len(p_move) == 2:
-                    if item.legal(p_move) == True:
-                        item.plegal(p_move)
-                        break
-                    else:
-                        print("not legal")
-                else:
-                    if item.current_column == notation:
-                        item.plegal(p_move)
-                        break
-                    else:
-                        print("not legal")
-        if notation == "Q":
+  square = p_move[-2]
+  notation = p_move[0]
+  clarification = p_move[1]
+  if move == True:
+    if notation in a_h:
+      candidates = []
+      for item in white_pawns:
+        if item.legal(layout, move, black_pawns, white_pawns, black_pieces, white_pieces) == True and item.checker(layout, move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        candidates[0].plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        candidates[0].promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+      else:
+        for candidate in candidates:
+          if candidate.current_column == notation:
+            candidate.plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            candidate.promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+            break
+    elif notation 
+      
 
 
 
