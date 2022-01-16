@@ -82,7 +82,8 @@ def move(p_move):
             candidate.plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
             candidate.promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
             break
-    elif notation 
+    elif notation:
+      pass
       
 
 

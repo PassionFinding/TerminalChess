@@ -108,7 +108,41 @@ class Pawn(Piece):
         super().__init__(color, notation, position, moved)
         self.passantable = passantable
         self.current_column = self.position[0]
-    #The actual board in Chess.py will be substituted for board
+        
+    def return_moves(self):
+      black_front = [int(self.position[-1])-2, a_h.index(self.position[-2])]
+      black_double_front = [int(self.position[-1])-3, a_h.index(self.position[-2])]
+      black_right = [int(self.position[-1])-2, a_h.index(self.position[-2]) - 1]
+      black_left = [int(self.position[-1])-2, a_h.index(self.position[-2]) + 1]
+
+      white_front = [int(self.position[-1]), a_h.index(self.position[-2])]
+      white_double_front = [int(self.position[-1])+1, a_h.index(self.position[-2])]
+      white_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
+      white_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
+
+      white_moves = [white_front, white_double_front, white_right, white_left]
+      black_moves = [black_front, black_double_front, black_right, black_left]
+      white_possibilities = []
+      black_possibilities = []
+      if self.color == True:
+        for move in white_moves:
+          if move[-2] in range(8) and move[-1] in range(8):
+            official_notation = a_h[move[1]] + str(move[0] + 1)
+            white_possibilities.append(official_notation)
+          else:
+            continue
+        return white_possibilities
+      else:
+        for move in black_moves:
+          if move[-2] in range(8) and move[-1] in range(8):
+            official_notation = a_h[move[1]] + str(move[0] + 1)
+            black_possibilities.append(official_notation)
+          else:
+            continue
+        return black_possibilities
+      
+
+
     def legal(self, board, move, black_pawns, white_pawns, black_pieces, white_pieces):
         square = [int(move[-1]) - 1, a_h.index(move[-2])]
         black_front = [int(self.position[-1])-2, a_h.index(self.position[-2])]
@@ -123,13 +157,11 @@ class Pawn(Piece):
 
         moves = [white_front, white_double_front, white_right, white_left, black_front, black_double_front, black_right, black_left]
         possibilities = []
-        def possible_moves(): 
-            for move in moves:
-                if move[-2] in range(8) and move[-1] in range(8):
-                    possibilities.append(move)
-                else:
-                    continue
-        possible_moves()
+        for move in moves:
+          if move[-2] in range(8) and move[-1] in range(8):
+            possibilities.append(move)
+          else:
+            continue
         if square in possibilities:
             if (self.color == True and square == white_double_front and self.moved == False and board[square[-2]][square[-1]] == "⬚" and board[white_front[-2]][white_front[-1]] == "⬚") or (
                 self.color == False and square == black_double_front and self.moved == False and board[square[-2]][square[-2]] == "⬚" and board[black_front[-2]][black_front[-1]] == "⬚"
@@ -165,7 +197,7 @@ class Pawn(Piece):
             return False
     def promotion(self, list_white, list_black, list_white_pawns, list_black_pawns, board):
       if self.position[-1] == "8":
-        promote = input("Pawn promotion to?")
+        promote = input("Pawn promotion to? ")
         if promote == "Q" or promote == "q":
           if self.color == True:
             list_white.remove(self)
@@ -218,6 +250,8 @@ class Pawn(Piece):
             knight = Knight(False, "🄽", self.position, True)
             board[int(self.position[1])-1][a_h.index(self.position[0])] = "🄽"
             list_black.append(knight)
+        else:
+          print("Invalid")
 
     def plegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
         if self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
@@ -237,6 +271,25 @@ class King(Piece):
     def __init__(self, color, notation, position, moved):
         super().__init__(color, notation, position, moved)
     
+    def return_moves(self):
+        front = [int(self.position[-1]), a_h.index(self.position[-2])]
+        back = [int(self.position[-1]) - 2, a_h.index(self.position[-2])]
+        left = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) - 1]
+        right = [int(self.position[-1]) - 1, a_h.index(self.position[-2]) + 1]
+        front_left = [int(self.position[-1]), a_h.index(self.position[-2]) - 1]
+        front_right = [int(self.position[-1]), a_h.index(self.position[-2]) + 1]
+        back_left = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) - 1]
+        back_right = [int(self.position[-1]) - 2, a_h.index(self.position[-2]) + 1]
+        possible_moves = [front, back, left, right, front_left, front_right, back_left, back_right]
+        only_moves = []
+        for possible in possible_moves:
+          if possible[-1] in range(8) and possible[-2] in range(8):
+            official_notation = a_h[possible[1]] + str(possible[0] + 1)
+            only_moves.append(official_notation)
+          else:
+            continue
+        return only_moves
+
     def legal(self, board, move):
         alo = move[-2] + str(int(move[-1]) - 1)
         front = [int(self.position[-1]), a_h.index(self.position[-2])]
@@ -472,6 +525,8 @@ class Queen(Piece):
       row_pos += 1
       negative_diagonal.append(str(a_h[column_pos]) + str(row_pos))
     return negative_diagonal
+
+  #make a function called return everything that calls positive, negative, row, and column and appends all four into a list of moves in order to return the queen's possible moves. 
   
   def legal(self, board, move):
     if self.llegal(self.get_column(), board, move) == True or self.llegal(self.get_row(), board, move) == True or self.llegal(self.get_positive(), board, move) == True or self.llegal(self.get_negative(), board, move) == True:
