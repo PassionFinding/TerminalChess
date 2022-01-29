@@ -2,7 +2,6 @@ from re import T
 from string import ascii_lowercase as wordbabies
 import copy
 a_h = list(wordbabies[:8])
-move = True
 class Piece: 
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
   black_notation = ["🅁", "🄱", "🄽", "🅀", "🄺", "🄿"]
@@ -16,7 +15,7 @@ class Piece:
   def checker(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
       test_board = copy.deepcopy(board)
       test_board[int(self.position[-1]) - 1][a_h.index(self.position[-2])] = "⬚"
-      test_board[int(move[-1])-1][a_h.index(move[0])] = self.notation
+      test_board[int(move[-1])-1][a_h.index(move[-2])] = self.notation
       if type(self) == King:
         orig_pos = []
         orig_pos.append(self.position)
@@ -253,6 +252,7 @@ class Pawn(Piece):
             list_black.append(knight)
         else:
           print("Invalid")
+
 
     def plegal(self, board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces):
         if self.legal(board, move, black_pawns, white_pawns, black_pieces, white_pieces) == True and self.checker(board, move, list_of_pieces, king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
@@ -525,7 +525,8 @@ class Knight(Piece):
       possible_moves = [upper_upper_left, upper_upper_right, upper_left, upper_right, lower_left, lower_right, lower_lower_left, lower_lower_right]
 
       for possible in possible_moves:
-        if alo == a_h[possible[1]] + str(possible[0]) and possible[-1] in range(8) and possible[-2] in range(8):
+        if possible[-1] in range(8) and possible[-2] in range(8):
+          if alo == a_h[possible[1]] + str(possible[0]):
             if (board[possible[0]][possible[1]] == "⬚" or (board[possible[0]][possible[1]] in 
             self.black_notation and self.color == True) or (board[possible[0]][possible[1]] in self.white_notation and self.color == False)):
               return True
@@ -726,12 +727,13 @@ class Rook(Piece):
       return False
 
 def printboard(board):
-    board.reverse()
+    bord = copy.deepcopy(board)
+    bord.reverse()
     numb = list(range(1, 9))
     numb.reverse()
     num = iter(numb)
     print("  A B C D E F G H")
-    for thing in board:
+    for thing in bord:
         print(next(num), end = " ")
         print(" ".join(thing))
 

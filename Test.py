@@ -1,16 +1,16 @@
-from string import ascii_lowercase as wordbabies
-from Chess import layout
-import copy
-a_h = list(wordbabies[:8])
-from Piece import Piece
-from Piece import Pawn
-from Piece import King
-from Piece import Knight
-from Piece import Bishop
-from Piece import Rook
-from Piece import Queen
-from Piece import printboard
-from Piece import reverseboard
+# from string import ascii_lowercase as wordbabies
+# from Chess import layout
+# import copy
+# a_h = list(wordbabies[:8])
+# from Piece import Piece
+# from Piece import Pawn
+# from Piece import King
+# from Piece import Knight
+# from Piece import Bishop
+# from Piece import Rook
+# from Piece import Queen
+# from Piece import printboard
+# from Piece import reverseboard
 
 # rwrook = Rook(True, "🆁", "h1", False)
 # lwrook = Rook(True, "🆁", "a1", False)
@@ -23,11 +23,11 @@ from Piece import reverseboard
 # layout[int(bking.position[-1])-1][a_h.index(bking.position[-2])] = bking.notation
 # layout[int(lbrook.position[-1])-1][a_h.index(lbrook.position[-2])] = lbrook.notation
 # layout[int(rbrook.position[-1])-1][a_h.index(rbrook.position[-2])] = rbrook.notation
-pawn1 = Pawn(True, "🅿", "a8", True, True, "c")
-layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
+# pawn1 = Pawn(True, "🅿", "a8", True, True, "c")
+# layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
 # black_pieces = [bking]
-white_pieces = [pawn1] #wking, rwrook, lwrook, 
-white_pawns = [pawn1]
+# white_pieces = [pawn1] #wking, rwrook, lwrook, 
+# white_pawns = [pawn1]
 # print(rbrook.legal(layout, wking.position))
 # turn = True
 # wking.castle(layout, wking, rwrook, lwrook, bking, None, None, white_pieces, black_pieces, "O-O-O", turn, [], [])
@@ -36,9 +36,9 @@ white_pawns = [pawn1]
 # pawn2 = Pawn(False, "🄿", "h4", True, True, "d")
 # layout[int(pawn1.position[-1])-1][a_h.index(pawn1.position[0])] = pawn1.notation
 # layout[int(pawn2.position[-1])-1][a_h.index(pawn2.position[0])] = pawn2.notation
-queen = Queen(False, "🅀", "e4", True)
+# queen = Queen(False, "🅀", "e4", True)
 # queen2 = Queen(False, "🅀", "a5", True)
-layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
+# layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
 # layout[int(queen2.position[-1])-1][a_h.index(queen2.position[0])] = queen2.notation
 # rook = Rook(True, "🆁", "f5", True)
 # layout[int(rook.position[-1])-1][a_h.index(rook.position[0])] = rook.notation
@@ -83,3 +83,15 @@ layout[int(queen.position[-1])-1][a_h.index(queen.position[0])] = queen.notation
 # print(white_pieces)
 # print(white_pawns)
 # print(white_pieces[0].legal(layout, "d8"))
+
+test = True
+def function(test):
+    if test == True:
+        test = False
+        return test
+    else:
+       test = False
+       return test
+print(test)
+function(test)
+print(test)

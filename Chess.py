@@ -7,7 +7,6 @@ from Piece import Rook
 from Piece import Queen
 from Piece import printboard
 from Piece import reverseboard
-from Piece import move
 layout = [["⬚" for i in range(8)] for i in range(8)]
 a_h = list(wordbabies[:8])
 white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
@@ -59,39 +58,334 @@ def starting_board():
   for item in white_pieces:
     layout[int(item.position[-1]) - 1][a_h.index(item.position[-2])] = item.notation
 
-def move(p_move):
-  square = p_move[-2]
+class Turn:
+  def __init__(self, turn):
+    self.turn = turn
+
+turn = Turn(True)
+def move(p_move, turn):
   notation = p_move[0]
   clarification = p_move[1]
-  if move == True:
+  if turn.turn == True:
     if notation in a_h:
       candidates = []
       for item in white_pawns:
-        if item.legal(layout, move, black_pawns, white_pawns, black_pieces, white_pieces) == True and item.checker(layout, move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+        if item.legal(layout, p_move, black_pawns, white_pawns, black_pieces, white_pieces) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid Move.")
+      elif len(candidates) == 1:
+        candidates[0].plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        candidates[0].promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if candidate.current_column == notation:
+            candidate.plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            candidate.promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+            turn.turn = False
+            break
+          else:
+            continue
+        return print("Invalid")
+    elif notation == "Q":
+      candidates = []
+      queens = []
+      for item in white_pieces:
+        if type(item) == Queen:
+          queens.append(item)
+        else:
+          continue
+      for item in queens:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
           candidates.append(item)
         else:
           continue
       if len(candidates) == 0:
         print("Invalid move.")
       elif len(candidates) == 1:
-        candidates[0].plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        item.qlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.qlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = False
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "R":
+      candidates = []
+      rooks = []
+      for item in white_pieces:
+        if type(item) == Rook:
+          rooks.append(item)
+        else:
+          continue
+      for item in rooks:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.rlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.rlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = False
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "B":
+      candidates = []
+      bishops = []
+      for item in white_pieces:
+        if type(item) == Bishop:
+          bishops.append(item)
+        else:
+          continue
+      for item in bishops:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.blegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.blegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = False
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "N":
+      candidates = []
+      knights = []
+      for item in white_pieces:
+        if type(item) == Knight:
+          knights.append(item)
+        else:
+          continue
+      for item in knights:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.nlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.nlegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = False
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "K":
+      candidates = []
+      kings = []
+      for item in white_pieces:
+        if type(item) == King:
+          kings.append(item)
+        else:
+          continue
+      for item in kings:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.klegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = False
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.klegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn =False
+            break
+          else:
+            continue
+        print("Invalid move")
+  else:
+    if notation in a_h:
+      candidates = []
+      for item in black_pawns:
+        if item.legal(layout, p_move, black_pawns, white_pawns, black_pieces, white_pieces) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        candidates[0].plegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
         candidates[0].promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+        turn.turn =True
       else:
         for candidate in candidates:
           if candidate.current_column == notation:
-            candidate.plegal(layout, p_move, black_pieces, white_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            candidate.plegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
             candidate.promotion(white_pieces, black_pieces, white_pawns, black_pawns, layout)
+            turn.turn = True
             break
-    elif notation:
-      pass
-      
-
-
-
-                
-
-
-# while True:
-#     starting_board()
-#     printboard()
-#     p_move = input("Enter move: ")
+          else:
+            continue
+        return print("Invalid")
+    elif notation == "Q":
+      candidates = []
+      queens = []
+      for item in black_pieces:
+        if type(item) == Queen:
+          queens.append(item)
+        else:
+          continue
+      for item in queens:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.qlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = True
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.qlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = True
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "R":
+      candidates = []
+      rooks = []
+      for item in black_pieces:
+        if type(item) == Rook:
+          rooks.append(item)
+        else:
+          continue
+      for item in rooks:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.rlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = True
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.rlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = True
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "B":
+      candidates = []
+      bishops = []
+      for item in black_pieces:
+        if type(item) == Bishop:
+          bishops.append(item)
+        else:
+          continue
+      for item in bishops:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.blegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = True
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.blegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = True
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "N":
+      candidates = []
+      knights = []
+      for item in black_pieces:
+        if type(item) == Knight:
+          knights.append(item)
+        else:
+          continue
+      for item in knights:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.nlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = True
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.nlegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = True
+            break
+          else:
+            continue
+        print("Invalid move")
+    elif notation == "K":
+      candidates = []
+      kings = []
+      for item in black_pieces:
+        if type(item) == King:
+          kings.append(item)
+        else:
+          continue
+      for item in kings:
+        if item.legal(layout, p_move) == True and item.checker(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces) == False:
+          candidates.append(item)
+        else:
+          continue
+      if len(candidates) == 0:
+        print("Invalid move.")
+      elif len(candidates) == 1:
+        item.klegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+        turn.turn = True
+      else:
+        for candidate in candidates:
+          if clarification in candidate.position:
+            candidate.klegal(layout, p_move, white_pieces, black_king, black_pawns, white_pawns, black_pieces, white_pieces)
+            turn.turn = True
+            break
+          else:
+            continue
+        print("Invalid move")
+starting_board()
+while True:
+  printboard(layout)
+  p_move = input("Input move: ")
+  move(p_move, turn)
