@@ -1,6 +1,7 @@
 from re import T
 from string import ascii_lowercase as wordbabies
 import copy
+from tokenize import Number
 a_h = list(wordbabies[:8])
 class Piece: 
   white_notation = ["🆁", "🅱", "🅽", "🆀", "🅺", "🅿"]
@@ -744,3 +745,4 @@ def reverseboard(board):
     for thing in board:
         print(next(num), end = " ")
         print(" ".join(thing))
+

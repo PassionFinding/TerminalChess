@@ -385,6 +385,7 @@ def move(p_move, turn):
             continue
         print("Invalid move")
 starting_board()
+
 while True:
   printboard(layout)
   p_move = input("Input move: ")
